@@ -90,7 +90,7 @@ export default function Footer() {
             <h3 className="text-sm font-bold text-neutral-dark uppercase tracking-wider">Legal</h3>
             <div className="flex flex-col gap-3">
               <Link
-                href="#"
+                href="/privacy"
                 className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
               >
                 Privacy Policy
