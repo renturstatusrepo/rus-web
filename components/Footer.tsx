@@ -96,7 +96,7 @@ export default function Footer() {
                 Privacy Policy
               </Link>
               <Link
-                href="#"
+                href="/terms"
                 className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
               >
                 Terms of Service
