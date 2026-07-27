@@ -7,71 +7,67 @@ export default function Testimonials() {
 
   const tabs = [
     { id: "featured", label: "Featured Stories" },
-    { id: "video", label: "Video Reviews" },
-    { id: "case", label: "Case Studies" },
+    { id: "advertisers", label: "Businesses" },
+    { id: "earners", label: "Creators & Earners" },
   ];
 
   const testimonials = [
     {
-      name: "Sarah Jenkins",
-      role: "CMO at TechFlow",
+      name: "Tunde Adebayo",
+      role: "Fashion Brand Owner",
       type: "Advertiser",
       verified: true,
       verifiedColor: "primary",
       badgeBg: "bg-pink-50",
       badgeText: "text-magenta-pink",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuA0Qt8D4Xa2Zm-utS6c33K17dHBv1h5oT6v1yZWj3uqVSIkjKqWrea4_2V7fy04NrwdJKSBL12QUgQpmkkbyiez0STryTalJmfCT_2pGl0SKDk_Ak7t-j8SX_V3DYAK_DfxfwM_N7i7hUKET781EXaAo1n-HQ0AmK7zucRyrcFp-iTvi5GFx1WeZMsFRd781qZrRdKCxT0ANkyXUodEvUwLzqtD7mrMhCXfXJE-BXoUIBUtktkYzkfN1VxJfBS4omzdkl-Mbt_8JA",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
       quote:
-        "Finally, ad spend that makes sense. We saw a 300% increase in genuine engagement compared to traditional display ads.",
+        "Running campaigns on RUS helped our clothing line reach real buyers directly on WhatsApp. The engagement was genuine, social, and effective.",
     },
     {
-      name: "Mike Ross",
-      role: "Student • Earned ₦675,000 this mo.",
+      name: "Amaka Nwosu",
+      role: "Student & Creator",
       type: "Earner",
       verified: true,
       verifiedColor: "green-500",
       badgeBg: "bg-slate-100",
       badgeText: "text-slate-600",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuD0EAMpVbcQFpkI7zw1dfXLwOoGMwtpAAy7VHi5J1A_byJCk9Xdr34BUKVuBoQqqmgBKROYxT_i9cq1bePi1yRlmSlSOJJo6TQDHdFp7BgCT3QxIiFPflPo3VY2taYW4TWKES-JV9Xf19DJAGfZka3m8x7EAaozSdN7NNH_A1sl1gjnyirvdn3rSpbT4dk1TYoazlT8IjKhw2ohIP4nJIv3qHbUP30QeeJcpHCroLjYDHenaQ7uKRD8QEF4t62JnWMwgsb6XHQ5fg",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
       quote:
-        "I turn my downtime into downtime dollars. It's the easiest side hustle I've ever had while focusing on my studies.",
+        "I post campaign statuses during my free time. Payouts go straight to my wallet once verified. It's transparent and super easy to use.",
     },
     {
-      name: "Jenny Wilson",
-      role: "Freelancer • Top 10% Earner",
-      type: "Earner",
-      verified: true,
-      verifiedColor: "green-500",
-      badgeBg: "bg-slate-100",
-      badgeText: "text-slate-600",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCVXBrir4lTeHHDIMVGnz6SAsTYXKb6_9RtETE-deND2PnAWRGqf6mHS9JE-CQY4tApYoood3C1VtVmOouTotVl1xRe1XLmF0y4sPgyvXNHVsUoQ6-TcCgUAltxRN-KDMJhyqr4DefmkwB0NTR7NUj9ZWeB1Eeluw8sEmisK5V-pPYcxoIiILePVdTRmH37mfY63lOvNgWuXab5JPo_SfMQDt7BFyr64pVh7QdXEOJ3JVbN7Unz1e_WgqY1R3IepJ9ehQPDlQDSQA",
-      quote:
-        "RUS helped me pay for my textbooks just by watching ads that actually interest me. The platform is super transparent.",
-    },
-    {
-      name: "David Kim",
-      role: "Founder at GrowthLabs",
+      name: "Chidi Okonkwo",
+      role: "Digital Marketer",
       type: "Advertiser",
       verified: true,
       verifiedColor: "primary",
       badgeBg: "bg-pink-50",
       badgeText: "text-magenta-pink",
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDOmj14PyKFBIwkIrIQL0_c874MHbUEOqH3KTBestgTPML67ueMezVJlQ4i0xulXiIKS-fEymTpzaUd_y1OrQ31OJ6KgytWJhat7VryGIrg34z60CYWTxdKDBDmOA9sa4mn8TTbRyj42omOvN0TAlvRGx2ImrhBT0iiR5Kuw3pyd6MNllpo4cFFDtOkTjxOJzZjStFbEac6lqQ6Eu0qj3kp57lu6Cre9F7eJkTR8_z_XgNuYu4xK5rVETY0OGR0ZbZhUK9LJBeadg",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",
       quote:
-        "The verified attention metric is a game changer. We know exactly who we are reaching and the conversion rates prove it.",
+        "Unlike display ads plagued by bot traffic, RUS status campaigns connect our business with real people through trusted peer sharing.",
+    },
+    {
+      name: "Blessing Ndukwe",
+      role: "Small Business Owner",
+      type: "Earner",
+      verified: true,
+      verifiedColor: "green-500",
+      badgeBg: "bg-slate-100",
+      badgeText: "text-slate-600",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80",
+      quote:
+        "The platform gives full control. I only pick campaign statuses that fit my personal brand and audience, making it feel totally natural.",
     },
   ];
 
   const ratingBreakdown = [
-    { stars: 5, percentage: 85 },
-    { stars: 4, percentage: 10 },
-    { stars: 3, percentage: 3 },
+    { stars: 5, percentage: 88 },
+    { stars: 4, percentage: 9 },
+    { stars: 3, percentage: 2 },
     { stars: 2, percentage: 1 },
-    { stars: 1, percentage: 1 },
+    { stars: 1, percentage: 0 },
   ];
 
   return (
@@ -82,7 +78,7 @@ export default function Testimonials() {
             Trusted by Brands, Loved by People
           </h2>
           <p className="text-slate-600 text-lg max-w-2xl px-4 leading-relaxed">
-            See how RUS is redefining advertising through Attentionomics. Whether you're buying attention or renting your status, the results speak for themselves.
+            See how RUS is connecting businesses with real audience attention. Whether you're launching a campaign or sharing statuses, the experience is built on trust and transparency.
           </p>
         </div>
       </div>
@@ -96,7 +92,7 @@ export default function Testimonials() {
                 <span className="text-slate-600 text-sm font-medium">/ 5.0</span>
               </div>
               <div className="flex gap-1">
-                {[1, 2, 3, 4].map((i) => (
+                {[1, 2, 3, 4, 5].map((i) => (
                   <span
                     key={i}
                     className="material-symbols-outlined text-2xl bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary"
@@ -104,11 +100,8 @@ export default function Testimonials() {
                     star
                   </span>
                 ))}
-                <span className="material-symbols-outlined text-2xl bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary">
-                  star_half
-                </span>
               </div>
-              <p className="text-neutral-dark text-base font-medium leading-normal mt-1">10k+ Active Participants</p>
+              <p className="text-neutral-dark text-base font-medium leading-normal mt-1">Verified Platform Feedback</p>
             </div>
             <div className="grid min-w-[280px] max-w-[400px] flex-1 grid-cols-[20px_1fr_40px] items-center gap-y-3">
               {ratingBreakdown.map((rating) => (
@@ -159,11 +152,12 @@ export default function Testimonials() {
                 className="flex flex-col rounded-2xl p-8 bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-300"
               >
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="h-16 w-16 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
-                    <div
-                      className="h-full w-full bg-cover bg-center"
-                      style={{ backgroundImage: `url("${testimonial.image}")` }}
-                    ></div>
+                  <div className="h-14 w-14 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
@@ -208,7 +202,7 @@ export default function Testimonials() {
       <div className="px-4 md:px-40 flex flex-1 justify-center py-12">
         <div className="flex flex-col max-w-[960px] flex-1 items-center gap-6">
           <p className="text-slate-600 text-center font-medium">
-            Join 10,000+ others participating in the Attention Economy
+            Join users and businesses participating in speed status marketing
           </p>
           <div className="flex gap-4">
             <button className="bg-neutral-dark hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-bold transition-colors">

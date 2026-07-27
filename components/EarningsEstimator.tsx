@@ -3,20 +3,20 @@
 import { useState } from "react";
 
 export default function EarningsEstimator() {
-  const [followers, setFollowers] = useState(12500);
-  
-  // Calculate earnings based on followers (simplified formula)
-  const calculateEarnings = (followerCount: number) => {
-    // Simple formula: ₦150 per follower per month (example)
-    return Math.round(followerCount * 150);
+  const [dailyViews, setDailyViews] = useState(250);
+
+  // Calculate realistic monthly earnings based on average daily status views
+  const calculateEarnings = (views: number) => {
+    // Approx ₦30 estimated earning per daily view per month from active campaigns
+    return Math.round(views * 30);
   };
 
-  const earnings = calculateEarnings(followers);
-  const percentage = ((followers - 1000) / (500000 - 1000)) * 100;
+  const earnings = calculateEarnings(dailyViews);
+  const percentage = ((dailyViews - 50) / (2000 - 50)) * 100;
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
-    setFollowers(value);
+    setDailyViews(value);
   };
 
   return (
@@ -28,16 +28,16 @@ export default function EarningsEstimator() {
             Estimate Your Monthly Earnings
           </h3>
           <p className="text-slate-600 max-w-md">
-            See how much you could make based on your follower count and average engagement rate.
+            See how much you could make based on your average daily status views and campaign participation.
           </p>
         </div>
         <div className="mt-4 flex flex-col gap-4 w-full max-w-lg">
           <div className="flex justify-between items-end">
             <span className="text-sm font-bold uppercase tracking-wider text-slate-500">
-              Followers
+              Average Daily Status Views
             </span>
             <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary">
-              {followers.toLocaleString()}
+              {dailyViews.toLocaleString()} views
             </span>
           </div>
           <div className="flex h-6 w-full items-center cursor-pointer group py-2">
@@ -55,31 +55,31 @@ export default function EarningsEstimator() {
             </div>
             <input
               type="range"
-              min="1000"
-              max="500000"
-              step="100"
-              value={followers}
+              min="50"
+              max="2000"
+              step="10"
+              value={dailyViews}
               onChange={handleSliderChange}
               className="absolute w-full h-full opacity-0 cursor-pointer"
             />
           </div>
           <div className="flex justify-between text-xs font-medium text-slate-400">
-            <span>1k</span>
-            <span>500k+</span>
+            <span>50 views</span>
+            <span>2,000+ views</span>
           </div>
         </div>
       </div>
       <div className="flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-8 min-w-[300px] text-center border border-slate-100 relative z-10 w-full lg:w-auto shadow-sm">
         <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">
-          Potential Earnings
+          Estimated Earnings
         </p>
         <p className="text-5xl md:text-6xl font-extrabold text-magenta-pink tracking-tight">
           ₦{earnings.toLocaleString()}
           <span className="text-xl text-slate-400 font-medium ml-1">/mo</span>
         </p>
         <div className="mt-6 flex items-center gap-2 px-3 py-1.5 bg-pink-50 rounded-full border border-pink-100 text-sm font-bold">
-          <span className="material-symbols-outlined text-base bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary">arrow_upward</span>
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary">Top 12% of users</span>
+          <span className="material-symbols-outlined text-base bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary">verified</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary">Based on view activity</span>
         </div>
       </div>
     </div>

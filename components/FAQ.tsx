@@ -5,7 +5,7 @@ import { useState } from "react";
 const faqs = [
   {
     q: "How much can I earn per post?",
-    a: "Most users earn between ₦75,000–₦750,000 depending on engagement, follower count, and campaign type. Higher engagement rates and larger audiences typically result in higher earnings.",
+    a: "Earnings depend on your status views and the active campaigns you accept. You earn per verified view or completed campaign payout directly to your wallet.",
   },
   {
     q: "Do I need a minimum number of followers?",

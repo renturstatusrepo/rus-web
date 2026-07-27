@@ -9,7 +9,7 @@ const features = [
   {
     title: "Real-Time Earnings",
     description:
-      "Watch your balance grow as your audience engages. Earn up to ₦750,000 per post based on engagement.",
+      "Watch your balance grow as your audience engages. Earn per verified view and completed campaign post.",
     icon: "attach_money",
     highlight: true,
   },
@@ -55,11 +55,11 @@ export default function Features() {
             <p className="text-slate-600 text-base leading-relaxed">
               {f.highlight ? (
                 <>
-                  Watch your balance grow as your audience engages. Earn up to{" "}
+                  Watch your balance grow as your audience engages. Earn{" "}
                   <span className="text-magenta-pink font-bold bg-pink-50 px-1 rounded">
-                    ₦750,000 per post
+                    per verified view
                   </span>{" "}
-                  based on engagement.
+                  and completed campaign post.
                 </>
               ) : (
                 f.description

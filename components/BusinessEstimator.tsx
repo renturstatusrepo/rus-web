@@ -3,21 +3,19 @@
 import { useState } from "react";
 
 export default function BusinessEstimator() {
-  const [budget, setBudget] = useState(5000);
+  const [budget, setBudget] = useState(25000);
   const [audienceSize, setAudienceSize] = useState(7);
 
   // Calculate results based on inputs
   const calculateResults = () => {
-    const attentionMinutes = Math.round((budget / 165) * 60);
-    const shares = Math.round(budget / 630);
-    const costPerEngagement = 165;
-    const roi = 3.5;
+    const estimatedViews = Math.round(budget / 25);
+    const shares = Math.max(1, Math.round(budget / 1000));
+    const costPerView = 25;
 
     return {
-      attentionMinutes: attentionMinutes.toLocaleString(),
+      estimatedViews: estimatedViews.toLocaleString(),
       shares: shares.toLocaleString(),
-      costPerEngagement: costPerEngagement.toLocaleString(),
-      roi: roi.toFixed(1),
+      costPerView: costPerView.toLocaleString(),
     };
   };
 
@@ -37,7 +35,7 @@ export default function BusinessEstimator() {
           <div className="md:w-1/2">
             <h2 className="text-3xl font-bold text-neutral-dark mb-4">Estimate Your Reach</h2>
             <p className="text-slate-600 mb-8">
-              See how far your budget goes with real human attention. Adjust the sliders to simulate your campaign potential.
+              See how far your budget goes with real human status views. Adjust the sliders to simulate your campaign potential.
             </p>
             <div className="space-y-8">
               <div>
@@ -48,15 +46,15 @@ export default function BusinessEstimator() {
                 <input
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-magenta-pink"
                   type="range"
-                  min="750000"
-                  max="75000000"
-                  step="50000"
+                  min="5000"
+                  max="500000"
+                  step="5000"
                   value={budget}
                   onChange={(e) => setBudget(parseInt(e.target.value))}
                 />
                 <div className="flex justify-between mt-1 text-xs text-slate-500">
-                  <span>₦750,000</span>
-                  <span>₦75,000,000</span>
+                  <span>₦5,000</span>
+                  <span>₦500,000</span>
                 </div>
               </div>
               <div>
@@ -83,28 +81,28 @@ export default function BusinessEstimator() {
             <div className="bg-white border border-slate-200 rounded-2xl p-8 relative overflow-hidden shadow-lg">
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-magenta-pink/10 blur-[80px] rounded-full pointer-events-none"></div>
               <h3 className="text-slate-500 text-sm uppercase tracking-wide font-semibold mb-6">
-                Estimated Results
+                Estimated Campaign Impact
               </h3>
               <div className="grid grid-cols-2 gap-8 mb-8">
                 <div>
-                  <div className="text-3xl font-bold text-neutral-dark mb-1">{results.attentionMinutes}+</div>
-                  <div className="text-sm text-slate-500">Attention Minutes</div>
+                  <div className="text-3xl font-bold text-neutral-dark mb-1">{results.estimatedViews}+</div>
+                  <div className="text-sm text-slate-500">Verified Status Views</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-neutral-dark mb-1">{results.shares}</div>
-                  <div className="text-sm text-slate-500">Authentic Shares</div>
+                  <div className="text-3xl font-bold text-neutral-dark mb-1">~{results.shares}</div>
+                  <div className="text-sm text-slate-500">Authentic Status Posts</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-neutral-dark mb-1">₦{results.costPerEngagement}</div>
-                  <div className="text-sm text-slate-500">Cost per Engagement</div>
+                  <div className="text-3xl font-bold text-neutral-dark mb-1">~₦{results.costPerView}</div>
+                  <div className="text-sm text-slate-500">Est. Cost per View</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-600 mb-1">{results.roi}x</div>
-                  <div className="text-sm text-slate-500">ROI vs Industry Avg</div>
+                  <div className="text-3xl font-bold text-emerald-600 mb-1">100%</div>
+                  <div className="text-sm text-slate-500">Real Human Audience</div>
                 </div>
               </div>
               <button className="w-full py-3 rounded-lg bg-magenta-pink text-white font-bold hover:bg-pink-600 transition-colors">
-                Lock In This Pricing
+                Start a Campaign
               </button>
             </div>
           </div>

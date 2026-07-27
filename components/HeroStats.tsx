@@ -2,20 +2,20 @@ export default function HeroStats() {
   const stats = [
     {
       icon: "campaign",
-      label: "Active Campaigns",
-      value: "1,240",
+      label: "Campaign Delivery",
+      value: "Speed Marketing",
       color: "bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary",
     },
     {
       icon: "payments",
-      label: "Total Payouts",
-      value: "₦7.8B",
+      label: "Payout Speed",
+      value: "Instant Transfer",
       color: "text-green-500",
     },
     {
       icon: "group",
-      label: "Active Users",
-      value: "10,000+",
+      label: "Audience Quality",
+      value: "100% Real Humans",
       color: "bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary",
     },
   ];

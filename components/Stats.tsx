@@ -1,9 +1,9 @@
 export default function Stats() {
   const stats = [
-    { value: "15k+", label: "Active Users", color: "text-neutral-dark" },
-    { value: "₦3B+", label: "Paid Out to Users", color: "text-magenta-pink" },
-    { value: "500+", label: "Partner Brands", color: "text-neutral-dark" },
-    { value: "100%", label: "User Control", color: "bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary" },
+    { value: "100%", label: "Real Human Views", color: "text-neutral-dark" },
+    { value: "Instant", label: "Direct Wallet Payouts", color: "text-magenta-pink" },
+    { value: "Opt-In", label: "Full Content Control", color: "text-neutral-dark" },
+    { value: "Real-Time", label: "Transparent Tracking", color: "bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary" },
   ];
 
   return (

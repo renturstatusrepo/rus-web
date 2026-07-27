@@ -23,7 +23,7 @@ export default function LandingHero() {
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-500">
                 <span className="material-symbols-outlined text-lg text-green-500">check_circle</span>
-                <span>Verified by 10,000+ active users</span>
+                <span>100% Real Human Reach & Verified Speed Marketing</span>
               </div>
             </div>
             <div className="flex-1 w-full">
@@ -31,7 +31,7 @@ export default function LandingHero() {
                 className="w-full aspect-[4/3] bg-cover bg-center rounded-2xl shadow-2xl shadow-pink-500/10 border border-slate-200 relative overflow-hidden"
                 style={{
                   backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDHh_exGcRtLROYqktgEIgibal17-OBU5SMtC_yk3BgzzzrMJFKTc8LCWHz-HGyy2azLUyaefUjrVyRgoerCDmBcCbz3iP_64CA4DtGrJy46rczX9IqF04DGb8HzgccDQlA4sXVfsg7TB0GWp3cG7e9N6ypgre70jb0Bvyo2-I3A-6ESStAp-8qsldz43531vSy494YrpgeReSF_oUAHnx9aKFk0JmNNvrrmgxCRDYINGa3dIlemX4XM2tRT9NTadTa8K4atbnoHg")',
+                    'url("https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1000&q=80")',
                 }}
               >
                 <div className="w-full h-full bg-gradient-to-tr from-background-dark/80 to-transparent rounded-2xl"></div>
