@@ -2,12 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
+  const playStoreUrl = "https://play.google.com/store/apps/details?id=com.renturstatus.rus";
+
   return (
-    <footer className="bg-white border-t border-slate-200">
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-40 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="bg-slate-900 text-slate-400 border-t border-slate-800">
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          {/* Brand Column */}
           <div className="flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-3 text-slate-900 hover:opacity-80 transition-opacity">
+            <Link href="/" className="flex items-center gap-3">
               <div className="relative size-10 flex items-center justify-center">
                 <Image
                   src="/logo.png"
@@ -17,130 +20,74 @@ export default function Footer() {
                   className="object-contain"
                 />
               </div>
-              <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-magenta-pink to-primary">
-                RUS
+              <span className="font-extrabold text-xl text-white">
+                RentUrStatus
               </span>
             </Link>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Rent Ur Status - The Attentionomics platform where businesses pay for attention and people earn from it.
+            <p className="text-xs text-slate-400 leading-relaxed">
+              RentUrStatus (RUS) is the attentionomics platform where people earn from their social status and businesses access engaged audiences.
             </p>
           </div>
-          
-          <div className="flex flex-col gap-4">
-            <h3 className="text-sm font-bold text-neutral-dark uppercase tracking-wider">Platform</h3>
-            <div className="flex flex-col gap-3">
-              <Link
-                href="#for-users"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                For Users
-              </Link>
-              <Link
-                href="#for-business"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                For Business
-              </Link>
-              <Link
-                href="#how-it-works"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                How it Works
-              </Link>
-              <Link
-                href="#testimonials"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                Testimonials
-              </Link>
-            </div>
+
+          {/* Mobile App Column */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-extrabold text-white uppercase tracking-wider">Mobile Application</h3>
+            <a
+              href={playStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
+            >
+              Get on Google Play Store
+            </a>
+            <span className="text-xs text-purple-400 font-semibold">
+              Web App: Coming Soon 🚀
+            </span>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <h3 className="text-sm font-bold text-neutral-dark uppercase tracking-wider">Company</h3>
-            <div className="flex flex-col gap-3">
-              <Link
-                href="#"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                About Us
-              </Link>
-              <Link
-                href="#"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                Blog
-              </Link>
-              <Link
-                href="#"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                Careers
-              </Link>
-              <Link
-                href="#"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                Contact
-              </Link>
-            </div>
+          {/* Legal Column */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-extrabold text-white uppercase tracking-wider">Legal & Compliance</h3>
+            <Link
+              href="/privacy"
+              className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
+            >
+              Terms of Service
+            </Link>
+            <Link
+              href="/cookies"
+              className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
+            >
+              Cookie Policy
+            </Link>
+            <Link
+              href="/account-deletion"
+              className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
+            >
+              Account Deletion
+            </Link>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <h3 className="text-sm font-bold text-neutral-dark uppercase tracking-wider">Legal</h3>
-            <div className="flex flex-col gap-3">
-              <Link
-                href="/privacy"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                Terms of Service
-              </Link>
-              <Link
-                href="/cookies"
-                className="text-sm text-slate-600 hover:text-magenta-pink transition-colors"
-              >
-                Cookie Policy
-              </Link>
-            </div>
+          {/* Support Column */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-extrabold text-white uppercase tracking-wider">Support</h3>
+            <p className="text-xs text-slate-400">
+              Need assistance or have feedback? Reach out to our team directly from the mobile app or via support.
+            </p>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-slate-500">
-            © 2026 RUS (Rent Ur Status). All rights reserved.
-          </p>
-          <div className="flex justify-center gap-6">
-            <a
-              className="text-slate-400 hover:text-magenta-pink transition-colors"
-              href="#"
-              aria-label="Twitter"
-            >
-              <span className="material-symbols-outlined text-2xl">post</span>
-            </a>
-            <a
-              className="text-slate-400 hover:text-magenta-pink transition-colors"
-              href="#"
-              aria-label="LinkedIn"
-            >
-              <span className="material-symbols-outlined text-2xl">work</span>
-            </a>
-            <a
-              className="text-slate-400 hover:text-magenta-pink transition-colors"
-              href="#"
-              aria-label="Instagram"
-            >
-              <span className="material-symbols-outlined text-2xl">photo_camera</span>
-            </a>
-          </div>
+        <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} RentUrStatus (RUS). All rights reserved.</p>
+          <p>Designed for iOS & Android</p>
         </div>
       </div>
     </footer>
   );
 }
-

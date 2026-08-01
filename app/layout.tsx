@@ -18,8 +18,9 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "RUS - Benefits for Users",
-  description: "Monetize your social feed with Rent Ur Status",
+  title: "RentUrStatus (RUS) - Mobile App Available | Web App Coming Soon",
+  description: "The RentUrStatus Web Application is coming soon! Download our official mobile app on Android & iOS to start monetizing your social status and running ad campaigns today.",
+  keywords: ["RentUrStatus", "RUS", "Monetize WhatsApp Status", "Earn Money Online", "Status Advertising", "Mobile App"],
 };
 
 export default function RootLayout({
