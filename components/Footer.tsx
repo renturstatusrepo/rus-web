@@ -67,6 +67,12 @@ export default function Footer() {
               Cookie Policy
             </Link>
             <Link
+              href="/child-safety-policy"
+              className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
+            >
+              Child Safety Policy
+            </Link>
+            <Link
               href="/account-deletion"
               className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
             >
