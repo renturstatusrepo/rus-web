@@ -111,7 +111,7 @@ export default function ChildSafetyPolicy() {
               </p>
               <div className="space-y-2 text-slate-800 text-sm font-medium">
                 <p><span className="text-slate-500">App Name:</span> RentUrStatus (RUS)</p>
-                <p><span className="text-slate-500">Developer / Company:</span> RentUrStatus (RUS) Limited / RenturStatus Technologies</p>
+                <p><span className="text-slate-500">Developer Name:</span> RentUrStatus (RUS) Limited</p>
                 <p>
                   <span className="text-slate-500">Child Safety Contact Email:</span>{" "}
                   <a
