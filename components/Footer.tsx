@@ -67,10 +67,10 @@ export default function Footer() {
               Cookie Policy
             </Link>
             <Link
-              href="/child-safety-policy"
+              href="/child-safety-standards"
               className="text-xs text-slate-400 hover:text-pink-400 transition-colors"
             >
-              Child Safety Policy
+              Child Safety Standards
             </Link>
             <Link
               href="/account-deletion"
