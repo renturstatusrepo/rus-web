@@ -7,12 +7,11 @@ export default function WhatsComingWeb() {
     {
       icon: "🌐",
       title: "Seamless Web Experience",
-      description: "Access your Rentur Status account directly from any desktop or mobile browser without app dependencies.",
+      description: "Access your RUS account directly from any desktop or mobile browser without app dependencies.",
       badge: "COMING SOON TO WEB",
     },
     {
       icon: "💻",
-      title: "Larger Screen Experience",
       title: "Advanced Brand Analytics",
       description: "Broader screen real estate for businesses to manage status ad campaigns, view analytics, and track performance.",
       badge: "COMING SOON TO WEB",
