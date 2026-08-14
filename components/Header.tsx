@@ -9,8 +9,9 @@ export default function Header() {
   const playStoreUrl = "https://play.google.com/store/apps/details?id=com.renturstatus.rus";
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-6 py-4 lg:px-20">
-      <div className="flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative size-10 flex items-center justify-center transition-transform group-hover:scale-105">
             <Image
@@ -22,33 +23,33 @@ export default function Header() {
               priority
             />
           </div>
-          <div className="flex flex-col">
-            <span className="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-pink-600 to-blue-600">
-              RentUrStatus
-            </span>
-            <span className="text-[10px] font-semibold tracking-wider uppercase text-purple-600">
-              Mobile App Live
-            </span>
-          </div>
+          <span className="text-xl font-extrabold tracking-tight text-purple-700">
+            RUS
+          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-600"></span>
-            </span>
-            Web App Coming Soon
-          </span>
+        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+          <a href="#about" className="hover:text-purple-700 transition-colors">
+            About
+          </a>
+          <a href="#mobile-app" className="hover:text-purple-700 transition-colors">
+            Mobile App
+          </a>
+          <a href="#whats-coming" className="hover:text-purple-700 transition-colors">
+            Coming Soon
+          </a>
+        </nav>
 
+        {/* Primary CTA */}
+        <div className="hidden md:flex items-center gap-3">
           <a
             href={playStoreUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-700 to-pink-600 hover:from-purple-800 hover:to-pink-700 text-white text-sm font-bold shadow-lg shadow-purple-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs sm:text-sm font-bold shadow-lg shadow-purple-700/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <span>Get Mobile App</span>
+            <span>Download App</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
@@ -58,7 +59,7 @@ export default function Header() {
         {/* Mobile menu trigger */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-slate-700 hover:text-purple-700"
+          className="md:hidden p-2 text-slate-700 hover:text-purple-700 transition-colors"
           aria-label="Toggle menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,19 +74,36 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden pt-4 pb-2 border-t border-slate-100 mt-3 animate-fade-in-up">
+        <div className="md:hidden pt-4 pb-3 border-t border-slate-100 mt-3 animate-fade-in-up">
           <div className="flex flex-col gap-3">
-            <div className="p-3 bg-purple-50 rounded-xl border border-purple-100 flex items-center justify-between">
-              <span className="text-xs font-semibold text-purple-800">Web App Status</span>
-              <span className="text-xs font-bold text-pink-600">Coming Soon 🚀</span>
-            </div>
+            <a
+              href="#about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
+            >
+              About
+            </a>
+            <a
+              href="#mobile-app"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
+            >
+              Mobile App
+            </a>
+            <a
+              href="#whats-coming"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
+            >
+              Coming Soon
+            </a>
 
             <a
               href={playStoreUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-purple-700 text-white font-bold text-sm shadow-md"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-sm shadow-md"
             >
               <span>Download Mobile App</span>
             </a>
@@ -95,4 +113,3 @@ export default function Header() {
     </header>
   );
 }
-

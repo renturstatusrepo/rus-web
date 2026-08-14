@@ -12,30 +12,30 @@ export default function AppFeaturesPreview() {
       badge: "Earn Daily",
     },
     {
+      icon: "🛍️",
+      title: "In-App Marketplace",
+      description: "Buy & sell physical products, tickets, and redeem merchant coupons directly.",
+      gradient: "from-pink-500 to-rose-600",
+      badge: "Shop & Sell",
+    },
+    {
       icon: "💳",
-      title: "Instant Bank Withdrawals",
-      description: "Seamlessly withdraw your earnings and coins directly to any local bank account.",
-      gradient: "from-pink-500 to-purple-600",
+      title: "Instant Bank Payouts",
+      description: "Seamlessly withdraw your earnings and rewards directly into your bank account.",
+      gradient: "from-emerald-500 to-teal-600",
       badge: "Instant Pay",
     },
     {
       icon: "📢",
-      title: "Business Ad Campaigns",
+      title: "Speed Marketing",
       description: "Promote your brand, products, or events with authentic, real-human engagement.",
-      gradient: "from-blue-500 to-teal-600",
+      gradient: "from-blue-500 to-indigo-600",
       badge: "High ROI",
-    },
-    {
-      icon: "🎰",
-      title: "Spin & Win Daily Prizes",
-      description: "Spin the wheel every 24 hours to win free bonus coins and instant prizes.",
-      gradient: "from-amber-500 to-pink-600",
-      badge: "Daily Bonus",
     },
   ];
 
   return (
-    <section className="py-16 bg-slate-50/80 border-y border-slate-200/60">
+    <section id="mobile-app" className="py-16 bg-slate-50/80 border-y border-slate-200/60">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <span className="text-xs font-extrabold tracking-wider uppercase text-purple-600 bg-purple-100 px-3 py-1 rounded-full border border-purple-200">
@@ -53,7 +53,7 @@ export default function AppFeaturesPreview() {
           {features.map((item, index) => (
             <div
               key={index}
-              className="relative p-6 rounded-3xl bg-white border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+              className="relative p-6 rounded-3xl bg-white border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between text-left"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -76,7 +76,7 @@ export default function AppFeaturesPreview() {
           <div className="text-center md:text-left">
             <h3 className="text-2xl font-extrabold mb-2">Ready to Start Monetizing Your Feed?</h3>
             <p className="text-sm text-purple-200">
-              Download the RentUrStatus Mobile App now on Android or iOS.
+              Download the RUS Mobile App now on Android or iOS.
             </p>
           </div>
           <a
