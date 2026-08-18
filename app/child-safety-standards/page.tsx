@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "RUS Child Safety Standards - RentUrStatus (RUS) Limited",
+  title: "RUS Child Safety Standards - Rent Ur Status (RUS) Limited",
   description:
     "Published Child Safety Standards, CSAE and CSAM Prohibition Policy, Reporting Mechanisms, and Point of Contact for RUS - Speed Marketing Platform by RentUrStatus (RUS) Limited.",
 };
@@ -35,7 +35,7 @@ export default function ChildSafetyStandardsPage() {
             <div className="space-y-8 text-slate-700 text-base leading-relaxed">
               <section>
                 <p className="text-base text-slate-800 leading-relaxed">
-                  <strong>RentUrStatus (RUS) Limited</strong>, developer of{" "}
+                  <strong>Rent Ur Status (RUS) Limited</strong>, developer of{" "}
                   <strong>RUS - Speed Marketing Platform</strong>, is committed to
                   protecting children and maintaining a safe environment for
                   users of our platform.
@@ -84,24 +84,6 @@ export default function ChildSafetyStandardsPage() {
                   Users must not create, upload, request, store, distribute or
                   otherwise make CSAM available through RUS.
                 </p>
-                <p className="mb-3 font-semibold text-slate-800">
-                  Where RUS obtains actual knowledge of CSAM or suspected CSAE,
-                  RUS will take appropriate action in accordance with these
-                  standards, applicable law and our internal procedures.
-                </p>
-                <p className="mb-2 text-slate-700">This may include:</p>
-                <ul className="list-disc pl-6 space-y-1.5 text-slate-700">
-                  <li>removing or restricting access to prohibited content;</li>
-                  <li>suspending accounts;</li>
-                  <li>permanently terminating accounts;</li>
-                  <li>investigating reports;</li>
-                  <li>
-                    preserving relevant information where legally appropriate; and
-                  </li>
-                  <li>
-                    reporting to relevant authorities where required by law.
-                  </li>
-                </ul>
               </section>
 
               <section className="bg-slate-100/70 border border-slate-200 rounded-xl p-5">
@@ -124,18 +106,22 @@ export default function ChildSafetyStandardsPage() {
                 </p>
               </section>
 
-              <section>
-                <h2 className="text-xl font-bold text-slate-900 mb-3">Enforcement</h2>
-                <p className="mb-3">
-                  RUS may immediately suspend or permanently terminate an account
-                  where there is evidence of behaviour that violates these Child Safety
-                  Standards.
+              <section className="bg-purple-50/70 border border-purple-200 rounded-xl p-5 sm:p-6">
+                <h2 className="text-xl font-bold text-slate-900 mb-3 flex items-center gap-2">
+                  <span>⚖️</span> CSAM Enforcement and Reporting
+                </h2>
+                <p className="mb-3 text-slate-800 leading-relaxed">
+                  RUS will promptly investigate reports involving suspected CSAE or CSAM and take appropriate enforcement action, including removal of prohibited content and suspension or termination of accounts where warranted. Where RUS obtains actual knowledge of confirmed CSAM, it will act in accordance with applicable law and its enforcement procedures, including reporting to the National Center for Missing & Exploited Children (NCMEC), where applicable, or the appropriate competent regional authority.
                 </p>
-                <p>
-                  We may also take action against users who attempt to circumvent our
-                  safety controls or facilitate prohibited activity through another
-                  account.
-                </p>
+                <p className="mb-2 font-semibold text-slate-900">Enforcement and investigation measures include:</p>
+                <ul className="list-disc pl-6 space-y-1.5 text-slate-700">
+                  <li>Promptly investigating reports involving suspected CSAE or CSAM;</li>
+                  <li>Immediately removing or restricting access to prohibited content;</li>
+                  <li>Suspending or permanently terminating user accounts where warranted;</li>
+                  <li>Taking action against users who attempt to circumvent safety controls or facilitate prohibited activity;</li>
+                  <li>Preserving relevant information where legally appropriate; and</li>
+                  <li>Reporting confirmed CSAM to NCMEC or the appropriate competent regional law enforcement authority.</li>
+                </ul>
               </section>
 
               <section className="border border-slate-200 bg-slate-50 rounded-xl p-5 sm:p-6">
