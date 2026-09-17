@@ -1,0 +1,17 @@
+"use client";
+
+export default function MarketplaceError({ reset }: { error: Error; reset: () => void }) {
+  return (
+    <div className="mx-auto max-w-xl px-4 py-24 text-center">
+      <h1 className="text-2xl font-extrabold text-slate-900">The marketplace couldn’t load</h1>
+      <p className="mt-3 text-slate-600">Something went wrong on our side. Please try again in a moment.</p>
+      <button
+        type="button"
+        onClick={reset}
+        className="mt-8 rounded-xl bg-purple-700 px-6 py-3 text-sm font-bold text-white hover:bg-purple-800"
+      >
+        Try again
+      </button>
+    </div>
+  );
+}

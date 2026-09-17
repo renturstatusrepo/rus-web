@@ -30,15 +30,18 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-          <a href="#about" className="hover:text-purple-700 transition-colors">
+          <Link href="/marketplace" className="text-purple-700 hover:text-purple-900 transition-colors">
+            Marketplace
+          </Link>
+          <Link href="/#about" className="hover:text-purple-700 transition-colors">
             About
-          </a>
-          <a href="#mobile-app" className="hover:text-purple-700 transition-colors">
+          </Link>
+          <Link href="/#mobile-app" className="hover:text-purple-700 transition-colors">
             Mobile App
-          </a>
-          <a href="#whats-coming" className="hover:text-purple-700 transition-colors">
+          </Link>
+          <Link href="/#whats-coming" className="hover:text-purple-700 transition-colors">
             Coming Soon
-          </a>
+          </Link>
         </nav>
 
         {/* Primary CTA */}
@@ -76,27 +79,34 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden pt-4 pb-3 border-t border-slate-100 mt-3 animate-fade-in-up">
           <div className="flex flex-col gap-3">
-            <a
-              href="#about"
+            <Link
+              href="/marketplace"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 text-sm font-bold text-purple-700 hover:text-purple-900"
+            >
+              Marketplace
+            </Link>
+            <Link
+              href="/#about"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
             >
               About
-            </a>
-            <a
-              href="#mobile-app"
+            </Link>
+            <Link
+              href="/#mobile-app"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
             >
               Mobile App
-            </a>
-            <a
-              href="#whats-coming"
+            </Link>
+            <Link
+              href="/#whats-coming"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
             >
               Coming Soon
-            </a>
+            </Link>
 
             <a
               href={playStoreUrl}
