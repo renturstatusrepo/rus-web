@@ -150,7 +150,9 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
   });
   const paymentUrl = res.body?.data?.paymentUrl;
   if (!res.ok || typeof paymentUrl !== "string" || !paymentUrl.startsWith("https://")) {
-    return { error: errorMessage(res, "We couldn’t start the card payment. Please try again.") };
+    // Gateway failures read like "unexpected response format (Status 502)" — useless to a shopper
+    console.error(`Card payment could not be started via ${gateway.id}:`, res.body?.message ?? res.status);
+    return { error: `We couldn’t reach ${gateway.label} just now. Please try again in a moment.` };
   }
 
   await savePendingPayment({ reference, gateway: gateway.id, shipping });

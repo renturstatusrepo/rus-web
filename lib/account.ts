@@ -34,9 +34,22 @@ export async function callApi(path: string, init: { method?: string; body?: unkn
   }
 }
 
+/**
+ * A message worth showing a shopper. Payment gateways and validation pipes return things like
+ * `{"customer.email":{"message":"..."}}`, which means nothing to a buyer, so those are logged
+ * and replaced with the caller's plain-English fallback.
+ */
 export function errorMessage(result: ApiResult, fallback: string): string {
-  const message = result.body?.message;
-  return typeof message === "string" && message ? message : Array.isArray(message) ? message.join(", ") : fallback;
+  const raw = result.body?.message;
+  const message = typeof raw === "string" ? raw : Array.isArray(raw) ? raw.join(", ") : "";
+  if (!message) return fallback;
+
+  const technical = message.includes("{") || message.includes('"') || message.length > 160;
+  if (technical) {
+    console.error(`API error shown as "${fallback}": ${message}`);
+    return fallback;
+  }
+  return message;
 }
 
 export async function getToken(): Promise<string | null> {

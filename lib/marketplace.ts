@@ -21,6 +21,8 @@ export type ProductSummary = {
   category: string;
   location: string | null;
   businessName: string | null;
+  /** Sizes or colours mean the buyer must pick a variant on the product page before adding to the cart. */
+  needsChoice: boolean;
 };
 
 export type Product = ProductSummary & {
@@ -100,6 +102,7 @@ function toSummary(p: Raw): ProductSummary {
     category: p.category ?? "",
     location: p.location || null,
     businessName: p.businesses?.name || null,
+    needsChoice: toVariants(p.sizes).length > 0 || toVariants(p.colors).length > 0,
   };
 }
 
