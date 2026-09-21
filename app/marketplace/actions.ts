@@ -3,10 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { callApi, errorMessage, getAccount, getGateways, getToken, TOKEN_COOKIE } from "@/lib/account";
+import { callApi, errorMessage, getAccount, getGateways, getToken, startSession, TOKEN_COOKIE } from "@/lib/account";
 import { lineKey, MAX_LINES, MAX_QUANTITY, priceCart, readCart, writeCart } from "@/lib/cart";
 import { newPaymentReference, placeCartOrder, savePendingPayment, siteUrl } from "@/lib/checkout";
-import { NIGERIAN_STATES } from "@/lib/format";
+import { NIGERIAN_STATES, safeNext } from "@/lib/format";
 import { getProduct } from "@/lib/marketplace";
 
 const text = (value: FormDataEntryValue | null) => (typeof value === "string" ? value.trim() : "");
@@ -14,11 +14,6 @@ const quantityOf = (value: FormDataEntryValue | null) => {
   const n = Number(value);
   return Number.isInteger(n) ? n : 1;
 };
-
-/** Only allow redirects back into the marketplace, never to another site. */
-function safeNext(value: string): string {
-  return value.startsWith("/marketplace") && !value.startsWith("//") ? value : "/marketplace";
-}
 
 // ── Cart ──────────────────────────────────────────────────────────────────────
 
@@ -83,19 +78,9 @@ export async function verifyLoginCode(prev: LoginState, formData: FormData): Pro
   if (!code) return { ...prev, error: "Enter the code we emailed you." };
 
   const res = await callApi("/user/verify-otp", { method: "POST", body: { email, code, token: challenge } });
-  const accessToken = res.body?.data?.accessToken ?? res.body?.accessToken;
-  if (!res.ok || typeof accessToken !== "string") {
+  if (!res.ok || !(await startSession(res.body))) {
     return { step: "code", email, challenge, error: errorMessage(res, "That code didn’t work. Please try again.") };
   }
-
-  const expiresIn = Number(res.body?.data?.expiresIn ?? res.body?.expiresIn) || 60 * 60 * 24 * 7;
-  (await cookies()).set(TOKEN_COOKIE, accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: expiresIn,
-  });
   redirect(safeNext(text(formData.get("next"))));
 }
 
@@ -160,6 +145,21 @@ export async function placeOrder(_prev: CheckoutState, formData: FormData): Prom
 }
 
 // ── Orders ────────────────────────────────────────────────────────────────────
+
+export type CancelState = { error?: string; refund?: number } | null;
+
+/** Buyer cancels an order that hasn't shipped; the API refunds them to their wallet. */
+export async function cancelMyOrder(_prev: CancelState, formData: FormData): Promise<CancelState> {
+  const token = await getToken();
+  if (!token) redirect("/marketplace/login?next=/marketplace/orders");
+  const id = text(formData.get("id"));
+  const reason = text(formData.get("reason")).slice(0, 500);
+  const res = await callApi(`/order/${encodeURIComponent(id)}/cancel`, { method: "POST", token, body: { reason } });
+  if (!res.ok) return { error: errorMessage(res, "We couldn’t cancel this order. Please try again.") };
+  revalidatePath("/marketplace/orders");
+  revalidatePath("/marketplace/account");
+  return { refund: Number(res.body?.data?.refund || 0) };
+}
 
 export type ReceiptState = { error?: string; ok?: boolean } | null;
 

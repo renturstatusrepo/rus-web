@@ -9,3 +9,9 @@ export const NIGERIAN_STATES = [
   "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto",
   "Taraba", "Yobe", "Zamfara",
 ];
+
+/** Only allow redirects back into the marketplace, never to another site. */
+export function safeNext(value: string | null | undefined): string {
+  const v = value ?? "";
+  return v.startsWith("/marketplace") && !v.startsWith("//") ? v : "/marketplace";
+}

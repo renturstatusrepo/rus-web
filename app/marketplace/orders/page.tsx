@@ -2,21 +2,25 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import CancelOrderForm from "@/components/marketplace/CancelOrderForm";
 import ConfirmReceiptButton from "@/components/marketplace/ConfirmReceiptButton";
-import { getOrders } from "@/lib/account";
+import { getOrders, type Order } from "@/lib/account";
 import { formatPrice } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Your orders", robots: { index: false } };
 
 type SearchParams = Promise<{ placed?: string }>;
 
-const statusStyles: Record<string, string> = {
-  paid: "bg-blue-50 text-blue-700",
-  "in-transit": "bg-indigo-50 text-indigo-700",
-  delivered: "bg-amber-50 text-amber-800",
-  completed: "bg-emerald-50 text-emerald-700",
-  cancelled: "bg-slate-100 text-slate-500",
+const statusBadge: Record<string, { label: string; className: string }> = {
+  paid: { label: "Paid", className: "bg-blue-50 text-blue-700" },
+  "in-transit": { label: "Shipped", className: "bg-indigo-50 text-indigo-700" },
+  delivered: { label: "Delivered", className: "bg-amber-50 text-amber-800" },
+  completed: { label: "Completed", className: "bg-emerald-50 text-emerald-700" },
+  cancelled: { label: "Cancelled", className: "bg-slate-100 text-slate-500" },
 };
+
+// What the buyer paid for this item, and so what a cancellation refunds
+const total = (o: Order) => Math.max(0, o.price + o.deliveryFee - o.discount);
 
 export default async function OrdersPage({ searchParams }: { searchParams: SearchParams }) {
   const [orders, { placed }] = await Promise.all([getOrders(), searchParams]);
@@ -66,16 +70,33 @@ export default async function OrdersPage({ searchParams }: { searchParams: Searc
                     {order.color && ` · ${order.color}`}
                   </p>
                   <div className="mt-1 flex items-center gap-2">
-                    <span className="font-extrabold text-slate-900">{formatPrice(order.price + order.deliveryFee)}</span>
+                    <span className="font-extrabold text-slate-900">{formatPrice(total(order))}</span>
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-bold capitalize ${statusStyles[order.status] ?? "bg-slate-100 text-slate-600"}`}
+                      className={`rounded-full px-2 py-0.5 text-xs font-bold ${statusBadge[order.status]?.className ?? "bg-slate-100 text-slate-600"}`}
                     >
-                      {order.status}
+                      {statusBadge[order.status]?.label ?? order.status}
                     </span>
                   </div>
+                  {order.cancellation && (
+                    <p className="mt-1 text-xs text-slate-600">
+                      {order.cancellation.by === "buyer" ? "You cancelled this order" : `Cancelled by the ${order.cancellation.by}`}
+                      {order.cancellation.reason && `: “${order.cancellation.reason}”`}
+                      {order.cancellation.refund > 0 && (
+                        <span className="font-semibold text-emerald-700"> · {formatPrice(order.cancellation.refund)} refunded to your wallet</span>
+                      )}
+                    </p>
+                  )}
+                  {order.status === "in-transit" && (
+                    <p className="mt-1 text-xs text-slate-500">On its way. Confirm receipt once it has been delivered.</p>
+                  )}
                 </div>
               </div>
-              {(order.status === "paid" || order.status === "delivered") && <ConfirmReceiptButton id={order.id} />}
+              {(order.status === "paid" || order.status === "delivered") && (
+                <div className="flex flex-col items-stretch gap-2 sm:items-end">
+                  <ConfirmReceiptButton id={order.id} />
+                  {order.status === "paid" && <CancelOrderForm id={order.id} refund={total(order)} as="buyer" />}
+                </div>
+              )}
             </li>
           ))}
         </ul>

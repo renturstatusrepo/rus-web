@@ -52,11 +52,36 @@ export function errorMessage(result: ApiResult, fallback: string): string {
   return message;
 }
 
+/**
+ * Stores the access token from a login or sign-up response in an httpOnly cookie.
+ * Returns false when the response carries no token. Only callable from a server action or route handler.
+ */
+export async function startSession(body: Raw): Promise<boolean> {
+  const accessToken = body?.data?.accessToken ?? body?.accessToken;
+  if (typeof accessToken !== "string" || !accessToken) return false;
+  const expiresIn = Number(body?.data?.expiresIn ?? body?.expiresIn) || 60 * 60 * 24 * 7;
+  (await cookies()).set(TOKEN_COOKIE, accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: expiresIn,
+  });
+  return true;
+}
+
 export async function getToken(): Promise<string | null> {
   return (await cookies()).get(TOKEN_COOKIE)?.value ?? null;
 }
 
-export type Account = { id: string; name: string; email: string; walletBalance: number };
+export type Account = {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  role: "user" | "business" | "icon";
+  walletBalance: number;
+};
 
 export async function getAccount(): Promise<Account | null> {
   const token = await getToken();
@@ -64,7 +89,14 @@ export async function getAccount(): Promise<Account | null> {
   const res = await callApi("/user/me", { token });
   const u = res.ok ? res.body?.data : null;
   if (!u?.id) return null;
-  return { id: u.id, name: u.name || u.username || "", email: u.email ?? "", walletBalance: Number(u.wallet_balance || 0) };
+  return {
+    id: u.id,
+    name: u.name || u.username || "",
+    username: u.username ?? "",
+    email: u.email ?? "",
+    role: u.role === "business" || u.role === "icon" ? u.role : "user",
+    walletBalance: Number(u.wallet_balance || 0),
+  };
 }
 
 export type Gateway = { id: string; label: string };
@@ -84,12 +116,23 @@ export type Order = {
   status: string;
   price: number;
   deliveryFee: number;
+  /** This item's share of any coupon or voucher discount */
+  discount: number;
   quantity: number;
   createdAt: string;
   size: string | null;
   color: string | null;
   product: { id: string; title: string; image: string | null } | null;
+  /** Set once an order is cancelled */
+  cancellation: { by: "buyer" | "seller" | "admin"; reason: string | null; refund: number } | null;
 };
+
+/** The cancellation recorded on an order's shipping details, if any. */
+export function readCancellation(details: Raw): Order["cancellation"] {
+  if (!details?.cancelled_at) return null;
+  const by = details.cancelled_by === "seller" || details.cancelled_by === "admin" ? details.cancelled_by : "buyer";
+  return { by, reason: details.cancel_reason || null, refund: Number(details.refund_amount || 0) };
+}
 
 export async function getOrders(): Promise<Order[] | null> {
   const token = await getToken();
@@ -104,6 +147,7 @@ export async function getOrders(): Promise<Order[] | null> {
     status: o.status ?? "paid",
     price: Number(o.price || 0),
     deliveryFee: Number(o.shipping_details?.delivery_fee || 0),
+    discount: Number(o.shipping_details?.discount || 0),
     quantity: Number(o.shipping_details?.quantity || 1),
     createdAt: o.created_at,
     size: o.selected_size || null,
@@ -111,5 +155,6 @@ export async function getOrders(): Promise<Order[] | null> {
     product: o.product
       ? { id: o.product.id, title: o.product.title ?? "Product", image: assetUrl(o.product.images?.[0]) }
       : null,
+    cancellation: readCancellation(o.shipping_details),
   }));
 }

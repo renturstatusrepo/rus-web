@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import LoginForm from "@/components/marketplace/LoginForm";
 import { getToken } from "@/lib/account";
@@ -23,12 +24,12 @@ export default async function LoginPage({ searchParams }: { searchParams: Search
       </div>
       <p className="mt-6 text-center text-sm text-slate-600">
         New to RUS?{" "}
-        <a
-          href="https://play.google.com/store/apps/details?id=com.renturstatus.rus"
+        <Link
+          href={`/marketplace/signup${next !== "/marketplace" ? `?next=${encodeURIComponent(next)}` : ""}`}
           className="font-semibold text-purple-700 hover:underline"
         >
-          Create an account in the app
-        </a>
+          Create an account
+        </Link>
       </p>
     </div>
   );
