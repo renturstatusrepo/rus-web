@@ -113,6 +113,8 @@ export async function getGateways(): Promise<Gateway[]> {
 export type Order = {
   id: string;
   orderId: string;
+  /** The checkout this item belongs to: several items bought together share one reference (and one invoice) */
+  reference: string;
   status: string;
   price: number;
   deliveryFee: number;
@@ -123,6 +125,10 @@ export type Order = {
   size: string | null;
   color: string | null;
   product: { id: string; title: string; image: string | null } | null;
+  /** The store the item was bought from, as shown on the order and its invoice */
+  seller: { name: string; logo: string | null };
+  deliveryState: string;
+  deliveryAddress: string;
   /** Set once an order is cancelled */
   cancellation: { by: "buyer" | "seller" | "admin"; reason: string | null; refund: number } | null;
 };
@@ -144,6 +150,7 @@ export async function getOrders(): Promise<Order[] | null> {
   return rows.map((o) => ({
     id: String(o.id),
     orderId: o.order_id ?? o.orderId ?? String(o.id),
+    reference: o.shipping_details?.parent_order_id || o.order_id || String(o.id),
     status: o.status ?? "paid",
     price: Number(o.price || 0),
     deliveryFee: Number(o.shipping_details?.delivery_fee || 0),
@@ -155,6 +162,12 @@ export async function getOrders(): Promise<Order[] | null> {
     product: o.product
       ? { id: o.product.id, title: o.product.title ?? "Product", image: assetUrl(o.product.images?.[0]) }
       : null,
+    seller: {
+      name: o.product?.merchant_name || o.product?.businesses?.name || o.product?.users?.name || o.product?.users?.username || "RUS seller",
+      logo: assetUrl(o.product?.merchant_logo || o.product?.businesses?.logo || o.product?.users?.photo),
+    },
+    deliveryState: o.shipping_details?.state ?? "",
+    deliveryAddress: o.shipping_details?.address ?? "",
     cancellation: readCancellation(o.shipping_details),
   }));
 }
