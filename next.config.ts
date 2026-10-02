@@ -7,6 +7,9 @@ const assetsAreLocal = ["localhost", "127.0.0.1"].includes(assets.hostname);
 
 const nextConfig: NextConfig = {
   images: {
+    // Serve images as-is instead of through Vercel Image Optimization: the account's monthly
+    // optimization allowance ran out and Vercel answered every /_next/image request with 402.
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "rus-assets.fra1.cdn.digitaloceanspaces.com", pathname: "/images/**" },
       {
