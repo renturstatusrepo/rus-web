@@ -33,14 +33,14 @@ export default function Header() {
           <Link href="/marketplace" className="text-purple-700 hover:text-purple-900 transition-colors">
             Marketplace
           </Link>
-          <Link href="/#about" className="hover:text-purple-700 transition-colors">
+          <Link href="/#features" className="hover:text-purple-700 transition-colors">
             About
           </Link>
-          <Link href="/#mobile-app" className="hover:text-purple-700 transition-colors">
+          <Link href="/#download" className="hover:text-purple-700 transition-colors">
             Mobile App
           </Link>
-          <Link href="/#whats-coming" className="hover:text-purple-700 transition-colors">
-            Coming Soon
+          <Link href="/#how-it-works" className="hover:text-purple-700 transition-colors">
+            How it works
           </Link>
         </nav>
 
@@ -87,25 +87,25 @@ export default function Header() {
               Marketplace
             </Link>
             <Link
-              href="/#about"
+              href="/#features"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
             >
               About
             </Link>
             <Link
-              href="/#mobile-app"
+              href="/#download"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
             >
               Mobile App
             </Link>
             <Link
-              href="/#whats-coming"
+              href="/#how-it-works"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-purple-700"
             >
-              Coming Soon
+              How it works
             </Link>
 
             <a

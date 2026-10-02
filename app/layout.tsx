@@ -1,25 +1,20 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Noto_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import FontLoader from "@/components/FontLoader";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-body",
+// One variable font for the whole site: every weight is a real cut (no faux bold), and the optical-size
+// axis tightens letterforms automatically at headline sizes.
+const inter = Inter({
+  subsets: ["latin", "latin-ext"],
+  axes: ["opsz"],
+  variable: "--font-inter",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "RUS - Mobile App Available | Web App Coming Soon",
-  description: "The RUS Web Application is coming soon! Download our official mobile app on Android & iOS to start monetizing your social status and running ad campaigns today.",
+  title: "RUS: Speed Marketing Platform",
+  description: "Monetize your status, shop verified merchant stores and run speed marketing campaigns with RUS.",
   keywords: ["RUS", "RentUrStatus", "Monetize WhatsApp Status", "Earn Money Online", "Status Advertising", "Mobile App"],
 };
 
@@ -29,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <body
-        className={`${plusJakartaSans.variable} ${notoSans.variable} bg-background-light text-slate-900 font-display antialiased overflow-x-hidden`}
+        className={`bg-background-light text-slate-900 font-sans antialiased overflow-x-hidden`}
       >
         <FontLoader />
         {children}
