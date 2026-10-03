@@ -30,6 +30,8 @@ export default function FeaturedProducts({ products }: { products: ProductSummar
           duration: 1.1,
           ease: "power4.out",
           scrollTrigger: { trigger: rail.current, start: "top 85%" },
+          // Hand the cards back to CSS afterwards, so the hover lift (a CSS translate) works again
+          clearProps: "transform,translate,rotate,scale",
         });
       });
     },
@@ -101,7 +103,7 @@ export default function FeaturedProducts({ products }: { products: ProductSummar
           <Link
             key={p.id}
             href={`/marketplace/product/${encodeURIComponent(p.id)}`}
-            className="fp-card group relative shrink-0 snap-start w-[72vw] sm:w-[280px] lg:w-[300px] rounded-[28px] bg-slate-50 border border-slate-200/80 overflow-hidden hover:-translate-y-1 hover:shadow-2xl hover:shadow-rus-indigo/15 transition-[transform,box-shadow] duration-500"
+            className="fp-card group relative shrink-0 snap-start w-[72vw] sm:w-[280px] lg:w-[300px] rounded-[28px] bg-slate-50 border border-slate-200/80 overflow-hidden hover:-translate-y-1 hover:shadow-2xl hover:shadow-rus-indigo/15 transition-[translate,box-shadow] duration-500"
           >
             <div className="relative aspect-[4/5] bg-slate-100 overflow-hidden">
               {p.image && (
@@ -132,7 +134,7 @@ export default function FeaturedProducts({ products }: { products: ProductSummar
 
         <Link
           href="/marketplace"
-          className="fp-card shrink-0 snap-start w-[72vw] sm:w-[280px] lg:w-[300px] rounded-[28px] p-8 flex flex-col justify-between text-white bg-[linear-gradient(150deg,var(--color-rus-pink),var(--color-rus-indigo)_55%,var(--color-rus-cyan))] hover:-translate-y-1 transition-transform duration-500"
+          className="fp-card shrink-0 snap-start w-[72vw] sm:w-[280px] lg:w-[300px] rounded-[28px] p-8 flex flex-col justify-between text-white bg-[linear-gradient(150deg,var(--color-rus-pink),var(--color-rus-indigo)_55%,var(--color-rus-cyan))] hover:-translate-y-1 transition-[translate] duration-500"
         >
           <span className="text-xs font-extrabold tracking-[0.25em] text-white/80">MARKETPLACE</span>
           <span>

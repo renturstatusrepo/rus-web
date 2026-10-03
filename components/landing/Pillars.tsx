@@ -98,8 +98,10 @@ export default function Pillars() {
             const cardProps = {
               onPointerMove: onMove,
               onPointerLeave: onLeave,
+              // transition-none: links get a global CSS transform transition, which makes GSAP read the card's
+              // start position as its end position, so the entrance never moved (the card stayed overlapping)
               className:
-                "pl-card group relative block overflow-hidden rounded-[28px] bg-white border border-slate-200/80 p-8 shadow-xl shadow-slate-900/5 [transform-style:preserve-3d]",
+                "pl-card transition-none group relative block overflow-hidden rounded-[28px] bg-white border border-slate-200/80 p-8 shadow-xl shadow-slate-900/5 [transform-style:preserve-3d]",
             };
             const body = (
               <>
