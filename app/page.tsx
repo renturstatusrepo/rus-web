@@ -5,6 +5,7 @@ import Marquee from "@/components/landing/Marquee";
 import HowItWorks from "@/components/landing/HowItWorks";
 import Pillars from "@/components/landing/Pillars";
 import FeaturedProducts from "@/components/landing/FeaturedProducts";
+import AffiliateSection from "@/components/landing/AffiliateSection";
 import BrandsSection from "@/components/landing/BrandsSection";
 import FinalCTA from "@/components/landing/FinalCTA";
 import Footer from "@/components/Footer";
@@ -30,6 +31,7 @@ export default async function Home() {
         <HowItWorks />
         <Pillars />
         <FeaturedProducts products={featured} />
+        <AffiliateSection />
         <BrandsSection />
         <FinalCTA />
       </main>

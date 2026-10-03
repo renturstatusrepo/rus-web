@@ -10,6 +10,7 @@ const items = [
   "Speed marketing",
   "Verified merchant stores",
   "Event tickets",
+  "Earn as an affiliate",
   "Daily Spin & Win",
   "Real human reach",
 ];

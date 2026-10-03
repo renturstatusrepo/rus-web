@@ -9,6 +9,7 @@ import { PLAY_STORE_URL } from "./links";
 const links = [
   { href: "#how-it-works", label: "How it works" },
   { href: "#features", label: "Features" },
+  { href: "#affiliate", label: "Affiliates" },
   { href: "#brands", label: "For brands" },
   { href: "/marketplace", label: "Marketplace" },
 ];
