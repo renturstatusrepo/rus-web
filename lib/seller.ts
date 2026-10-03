@@ -43,6 +43,8 @@ export type SellerProduct = {
   price: number;
   quantity: number;
   deliveryFee: number;
+  /** Percentage offered to affiliates; 0 when not offered */
+  affiliateRate: number;
   category: string;
   location: string;
   status: ProductStatus;
@@ -71,6 +73,7 @@ function toSellerProduct(p: Raw): SellerProduct {
     price: Number(p.price || 0),
     quantity: Number(p.quantity || 0),
     deliveryFee: Number(p.delivery_fee || 0),
+    affiliateRate: Number(p.affiliate_rate || 0),
     category: p.category ?? "",
     location: p.location ?? "",
     status: p.status === "sold out" || p.status === "draft" ? p.status : "available",
@@ -116,6 +119,8 @@ export type SellerOrder = {
   deliveryAddress: string;
   product: { id: string; title: string; image: string | null } | null;
   cancellation: Order["cancellation"];
+  /** Set when an affiliate's link brought the sale: the rate they earn on it */
+  affiliateRate: number | null;
 };
 
 export async function getSellerOrders(status?: OrderStatus): Promise<SellerOrder[]> {
@@ -142,6 +147,7 @@ export async function getSellerOrders(status?: OrderStatus): Promise<SellerOrder
       deliveryAddress: shipping.address ?? "",
       product: o.product ? { id: o.product.id, title: o.product.title ?? "Product", image: assetUrl(o.product.images?.[0]) } : null,
       cancellation: readCancellation(shipping),
+      affiliateRate: o.affiliate_id && Number(o.affiliate_rate) > 0 ? Number(o.affiliate_rate) : null,
     };
   });
 }

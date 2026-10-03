@@ -3,9 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AddToCart from "@/components/marketplace/AddToCart";
+import CopyLink from "@/components/marketplace/CopyLink";
 import ProductGallery from "@/components/marketplace/ProductGallery";
 import ProductGrid from "@/components/marketplace/ProductGrid";
+import { getMyAffiliateCode } from "@/lib/affiliate";
+import { siteUrl } from "@/lib/checkout";
 import { formatPrice, getProduct, getRating, getSellerProducts, humanizeCategory } from "@/lib/marketplace";
+import { referralLink } from "@/lib/referral";
 
 type Params = Promise<{ id: string }>;
 
@@ -34,7 +38,13 @@ export default async function ProductPage({ params }: { params: Params }) {
   const product = await getProduct(id);
   if (!product) notFound();
 
-  const [rating, more] = await Promise.all([getRating(product.id), getSellerProducts(product.sellerId, 1, 9)]);
+  const offersCommission = product.available && product.affiliateRate > 0;
+  const [rating, more, affiliateCode, site] = await Promise.all([
+    getRating(product.id),
+    getSellerProducts(product.sellerId, 1, 9),
+    offersCommission ? getMyAffiliateCode() : null,
+    offersCommission ? siteUrl() : "",
+  ]);
   const related = more.items.filter((p) => p.id !== product.id).slice(0, 8);
   const sellerName = product.businessName ?? product.seller?.name;
 
@@ -120,6 +130,28 @@ export default async function ProductPage({ params }: { params: Params }) {
               <p className="rounded-2xl border border-slate-200 bg-slate-100 p-5 text-center font-bold text-slate-600">
                 This product is no longer available
               </p>
+            )}
+
+            {offersCommission && (
+              <div className="rounded-2xl border border-purple-200 bg-purple-50/70 p-4">
+                {affiliateCode ? (
+                  <>
+                    <p className="font-extrabold text-purple-900">
+                      Earn {formatPrice((product.price * product.affiliateRate) / 100)} per sale
+                      <span className="ml-1 text-sm font-semibold text-purple-700">({product.affiliateRate}%)</span>
+                    </p>
+                    <p className="mb-3 mt-0.5 text-sm text-purple-900/70">Share your link. You also earn on anything else they buy that offers commission.</p>
+                    <CopyLink value={referralLink(site, `/marketplace/product/${encodeURIComponent(product.id)}`, affiliateCode)} />
+                  </>
+                ) : (
+                  <p className="text-sm text-purple-900">
+                    <span className="font-bold">Affiliates earn {product.affiliateRate}%</span> sharing this product.{" "}
+                    <Link href="/marketplace/affiliate" className="font-bold text-purple-700 underline-offset-2 hover:underline">
+                      Become an affiliate →
+                    </Link>
+                  </p>
+                )}
+              </div>
             )}
 
             {product.seller && (

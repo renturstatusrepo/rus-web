@@ -23,6 +23,8 @@ export type ProductSummary = {
   businessName: string | null;
   /** Sizes or colours mean the buyer must pick a variant on the product page before adding to the cart. */
   needsChoice: boolean;
+  /** The percentage of the price the seller offers affiliates; 0 when not offered */
+  affiliateRate: number;
 };
 
 export type Product = ProductSummary & {
@@ -103,6 +105,7 @@ function toSummary(p: Raw): ProductSummary {
     location: p.location || null,
     businessName: p.businesses?.name || null,
     needsChoice: toVariants(p.sizes).length > 0 || toVariants(p.colors).length > 0,
+    affiliateRate: Number(p.affiliate_rate || 0),
   };
 }
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import ProductForm from "@/components/marketplace/ProductForm";
 import { getAccount } from "@/lib/account";
+import { getAffiliateSettings } from "@/lib/affiliate";
 import { getCategories } from "@/lib/marketplace";
 import { getMyProduct } from "@/lib/seller";
 
@@ -14,7 +15,11 @@ export default async function EditProductPage({ params }: { params: Params }) {
   const account = await getAccount();
   if (!account) redirect("/marketplace/login?next=/marketplace/sell");
 
-  const [product, categories] = await Promise.all([getMyProduct(decodeURIComponent(id), account.id), getCategories()]);
+  const [product, categories, affiliate] = await Promise.all([
+    getMyProduct(decodeURIComponent(id), account.id),
+    getCategories(),
+    getAffiliateSettings(),
+  ]);
   if (!product) notFound();
 
   // Keep the product's current category selectable even if it isn't in the public list
@@ -27,6 +32,7 @@ export default async function EditProductPage({ params }: { params: Params }) {
       <h2 className="mb-6 text-xl font-extrabold text-slate-900">Edit “{product.title}”</h2>
       <ProductForm
         categories={options}
+        affiliate={affiliate}
         values={{
           id: product.id,
           title: product.title,
@@ -34,6 +40,7 @@ export default async function EditProductPage({ params }: { params: Params }) {
           price: product.price,
           quantity: product.quantity,
           deliveryFee: product.deliveryFee || "",
+          affiliateRate: product.affiliateRate || "",
           category: product.category,
           location: product.location,
           status: product.status,

@@ -21,6 +21,7 @@ export type ProductFormValues = {
   price: number | "";
   quantity: number | "";
   deliveryFee: number | "";
+  affiliateRate: number | "";
   category: string;
   location: string;
   status: "available" | "draft" | "sold out";
@@ -29,7 +30,12 @@ export type ProductFormValues = {
   colors: Variant[];
 };
 
-type Props = { values: ProductFormValues; categories: { slug: string; title: string }[] };
+type Props = {
+  values: ProductFormValues;
+  categories: { slug: string; title: string }[];
+  /** The commission range sellers may offer affiliates */
+  affiliate: { minRate: number; maxRate: number };
+};
 
 function VariantEditor({ label, prefix, initial }: { label: string; prefix: "size" | "color"; initial: Variant[] }) {
   // Each row keeps a stable key: the inputs hold their own values, so keying by position would
@@ -87,7 +93,7 @@ function VariantEditor({ label, prefix, initial }: { label: string; prefix: "siz
   );
 }
 
-export default function ProductForm({ values, categories }: Props) {
+export default function ProductForm({ values, categories, affiliate }: Props) {
   const [state, action] = useActionState<ProductFormState, FormData>(saveProduct, null);
   const [kept, setKept] = useState(values.images);
   const [picked, setPicked] = useState<{ name: string; url: string }[]>([]);
@@ -212,6 +218,33 @@ export default function ProductForm({ values, categories }: Props) {
             <option value="sold out">Sold out</option>
           </select>
         </label>
+      </section>
+
+      <section className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+        <div>
+          <h2 className="text-lg font-extrabold text-slate-900">Affiliate commission</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Optional. Approved RUS affiliates share products that offer commission, and earn this share of the price (after
+            discounts, never on delivery) on sales they bring you. You only pay it when the buyer confirms delivery.
+          </p>
+        </div>
+        <label className="block max-w-xs text-sm font-semibold text-slate-700">
+          Commission (%)
+          <input
+            name="affiliateRate"
+            type="number"
+            min={0}
+            max={affiliate.maxRate}
+            step="0.5"
+            inputMode="decimal"
+            defaultValue={values.affiliateRate}
+            placeholder="0"
+            className={field}
+          />
+        </label>
+        <p className="text-xs text-slate-500">
+          0 to not offer it, or between {affiliate.minRate}% and {affiliate.maxRate}%.
+        </p>
       </section>
 
       <section className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">

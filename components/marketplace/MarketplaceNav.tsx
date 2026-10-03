@@ -17,6 +17,9 @@ export default async function MarketplaceNav() {
           <Link href="/marketplace/sell" className={link}>
             Sell
           </Link>
+          <Link href="/marketplace/affiliate" className={link}>
+            Earn
+          </Link>
           {token ? (
             <Link href="/marketplace/account" className={link}>
               Account

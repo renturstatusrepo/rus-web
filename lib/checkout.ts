@@ -2,6 +2,7 @@ import "server-only";
 import { cookies, headers } from "next/headers";
 import { callApi, errorMessage } from "@/lib/account";
 import type { PricedCart } from "@/lib/cart";
+import { getReferralCode } from "@/lib/affiliate";
 
 // Remembers a card top-up while the buyer is on the gateway's page, so the return
 // handler verifies the reference we created rather than one from the URL.
@@ -45,8 +46,12 @@ export async function siteUrl(): Promise<string> {
 
 export type OrderResult = { ok: true; orderId: string } | { ok: false; error: string };
 
-/** Pays for the cart from the buyer's wallet. The API recomputes prices and charges the token's owner. */
+/**
+ * Pays for the cart from the buyer's wallet. The API recomputes prices and charges the token's owner.
+ * Any affiliate code the buyer arrived with goes along; the API decides which items it earns on.
+ */
 export async function placeCartOrder(token: string, cart: PricedCart, shipping: Shipping): Promise<OrderResult> {
+  const ref = await getReferralCode();
   const res = await callApi("/order/checkout-cart", {
     method: "POST",
     token,
@@ -59,6 +64,7 @@ export async function placeCartOrder(token: string, cart: PricedCart, shipping: 
         ...(l.color && { selected_color: l.color }),
       })),
       shipping_details: shipping,
+      ...(ref && { ref }),
     },
   });
   if (!res.ok) return { ok: false, error: errorMessage(res, "We couldn’t place your order. Please try again.") };

@@ -109,6 +109,7 @@ export async function saveProduct(_prev: ProductFormState, formData: FormData): 
   const price = amount(formData.get("price"));
   const quantity = amount(formData.get("quantity"));
   const deliveryFee = amount(formData.get("deliveryFee") || "0");
+  const affiliateRate = amount(formData.get("affiliateRate") || "0");
   const category = text(formData.get("category"));
   const location = text(formData.get("location"));
   const status = text(formData.get("status"));
@@ -118,6 +119,7 @@ export async function saveProduct(_prev: ProductFormState, formData: FormData): 
   if (!Number.isFinite(price) || price <= 0) return { error: "Enter a price above ₦0." };
   if (!Number.isInteger(quantity)) return { error: "Enter how many you have in stock (a whole number)." };
   if (!Number.isFinite(deliveryFee)) return { error: "Enter a delivery fee of ₦0 or more." };
+  if (!Number.isFinite(affiliateRate) || affiliateRate > 100) return { error: "Enter an affiliate commission between 0% and 100%." };
   if (!category) return { error: "Choose a category." };
   if (!["available", "draft", "sold out"].includes(status)) return { error: "Choose whether the product is for sale." };
 
@@ -147,6 +149,8 @@ export async function saveProduct(_prev: ProductFormState, formData: FormData): 
     price,
     quantity,
     deliveryFee,
+    // The API checks it against the programme's allowed range and explains if it's outside it
+    affiliateRate: Math.round(affiliateRate * 100) / 100,
     category,
     ...(location && { location }),
     status,

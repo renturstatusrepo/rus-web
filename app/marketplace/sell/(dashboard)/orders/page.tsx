@@ -71,6 +71,14 @@ export default async function SellerOrdersPage({ searchParams }: { searchParams:
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="font-bold text-slate-900">{o.product?.title ?? "Product removed"}</p>
                         <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${badge.className}`}>{badge.label}</span>
+                        {o.affiliateRate && (
+                          <span
+                            title={`An affiliate's link brought this sale. They earn ${o.affiliateRate}% of the price after discount, taken from your share.`}
+                            className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-bold text-purple-800"
+                          >
+                            Affiliate sale · {o.affiliateRate}%
+                          </span>
+                        )}
                       </div>
                       <p className="text-xs text-slate-500">
                         #{o.orderId} ·{" "}

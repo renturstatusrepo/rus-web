@@ -39,6 +39,16 @@ export default async function AccountPage() {
         </section>
 
         <section className={`${card} sm:col-span-2`}>
+          <h2 className="text-xs font-extrabold uppercase tracking-widest text-slate-500">Affiliate</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Share Marketplace products with your own link and earn a commission on every sale it brings in.
+          </p>
+          <Link href="/marketplace/affiliate" className="mt-4 inline-block text-sm font-bold text-purple-700 hover:underline">
+            Affiliate dashboard →
+          </Link>
+        </section>
+
+        <section className={`${card} sm:col-span-2`}>
           <h2 className="text-xs font-extrabold uppercase tracking-widest text-slate-500">Selling</h2>
           {business ? (
             <>
