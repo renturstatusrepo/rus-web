@@ -1,9 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
-import { useRef, useSyncExternalStore } from "react";
-import { gsap, useGSAP, MOTION_OK, REDUCED_MOTION } from "./gsap";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { gsap, useGSAP, MOTION_OK } from "./gsap";
 import StoreBadges from "./StoreBadges";
 import { APP_DEEP_LINK, PLAY_STORE_URL } from "./links";
 import type { SceneState } from "./HeroScene";
@@ -27,20 +28,33 @@ export default function Hero() {
     () => false,
   );
 
+  // Three.js is the heaviest thing on the page, so it loads only once the page itself has finished
+  // loading and the browser is idle. Data-saver users and reduced-motion users keep the static icon.
+  const [loadScene, setLoadScene] = useState(false);
+  const [sceneReady, setSceneReady] = useState(false);
+  useEffect(() => {
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
+    if (nav.connection?.saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let idle: number | undefined;
+    const start = () => {
+      const ric = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 300));
+      idle = ric(() => setLoadScene(true), { timeout: 2500 } as IdleRequestOptions);
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+    return () => {
+      window.removeEventListener("load", start);
+      if (idle !== undefined) (window.cancelIdleCallback ?? window.clearTimeout)(idle);
+    };
+  }, []);
+
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
       mm.add(MOTION_OK, () => {
-        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-        tl.set("[data-intro]", { autoAlpha: 1 })
-          .from(".hero-badge", { y: -16, autoAlpha: 0, duration: 0.8 })
-          .from(".hero-word", { yPercent: 115, rotate: 4, duration: 1.1, stagger: 0.07 }, "-=0.5")
-          .from(".hero-copy", { y: 24, autoAlpha: 0, duration: 0.9 }, "-=0.7")
-          .from(".hero-cta > *", { y: 20, autoAlpha: 0, duration: 0.8, stagger: 0.1 }, "-=0.6")
-          .from(".hero-stage", { scale: 0.75, autoAlpha: 0, duration: 1.6, ease: "expo.out" }, 0.2)
-          .from(".hero-chip", { scale: 0.6, autoAlpha: 0, duration: 0.7, stagger: 0.12, ease: "back.out(2)" }, "-=1");
-
+        // The intro itself is CSS (see .intro-* in globals.css), so the hero paints before any JavaScript runs.
         // Drifting chips around the 3D icon
         gsap.utils.toArray<HTMLElement>(".hero-chip").forEach((chip, i) => {
           gsap.to(chip, { y: i % 2 ? 10 : -10, duration: 2.4 + i * 0.4, repeat: -1, yoyo: true, ease: "sine.inOut" });
@@ -54,10 +68,6 @@ export default function Hero() {
           .to(".hero-text", { yPercent: -18, autoAlpha: 0.2, ease: "none" }, 0)
           .to(".hero-chips", { yPercent: -40, autoAlpha: 0, ease: "none" }, 0);
       });
-
-      mm.add(REDUCED_MOTION, () => {
-        gsap.set("[data-intro]", { autoAlpha: 1 });
-      });
     },
     { scope: root },
   );
@@ -69,9 +79,8 @@ export default function Hero() {
     >
       {/* Ambient brand glow + grid */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-32 size-[560px] rounded-full bg-rus-pink/25 blur-[140px]" />
-        <div className="absolute top-1/3 -right-40 size-[620px] rounded-full bg-rus-cyan/20 blur-[150px]" />
-        <div className="absolute bottom-0 left-1/3 size-[420px] rounded-full bg-rus-indigo/30 blur-[130px]" />
+        {/* Gradients rather than huge blur filters: same glow, far cheaper to paint on phones */}
+        <div className="absolute inset-0 bg-[radial-gradient(40rem_30rem_at_0%_0%,rgba(224,64,154,0.28),transparent_70%),radial-gradient(42rem_34rem_at_100%_45%,rgba(69,197,240,0.2),transparent_70%),radial-gradient(30rem_24rem_at_45%_100%,rgba(74,95,176,0.32),transparent_70%)]" />
         <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       </div>
 
@@ -100,31 +109,35 @@ export default function Hero() {
           )}
 
           <div
-            data-intro
-            className="hero-badge inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-xs sm:text-sm font-semibold text-white/80 mb-7"
+            className="intro-up [--intro-y:-16px] [--d:0.05s] hero-badge inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-xs sm:text-sm font-semibold text-white/80 mb-7"
           >
             <span className="px-2 py-0.5 rounded-full bg-rus-pink text-[10px] font-extrabold tracking-wider text-white">NEW</span>
             Marketplace is now live on the web
           </div>
 
-          <h1 data-intro className="font-extrabold tracking-tight leading-[0.98] text-[13vw] sm:text-7xl lg:text-[5.6rem] mb-7">
+          <h1 className="font-extrabold tracking-tight leading-[0.98] text-[13vw] sm:text-7xl lg:text-[5.6rem] mb-7">
             {headline.map((line, li) => (
               <span key={li} className="block">
                 {line.map((w, wi) => (
                   <span key={wi} className="inline-block overflow-hidden align-bottom pb-[0.08em] mr-[0.22em] last:mr-0">
-                    <span className={`hero-word inline-block ${w.gradient ? "text-rus-gradient" : ""}`}>{w.text}</span>
+                    <span
+                      className={`intro-word hero-word inline-block ${w.gradient ? "text-rus-gradient" : ""}`}
+                      style={{ "--d": `${0.15 + (li * 2 + wi) * 0.07}s` } as React.CSSProperties}
+                    >
+                      {w.text}
+                    </span>
                   </span>
                 ))}
               </span>
             ))}
           </h1>
 
-          <p data-intro className="hero-copy text-lg sm:text-xl text-white/65 max-w-xl leading-relaxed mb-10">
+          <p className="intro-up [--d:0.45s] hero-copy text-lg sm:text-xl text-white/65 max-w-xl leading-relaxed mb-10">
             Post brand campaigns to your status, get paid for every verified view, and cash out straight to your bank.
             Brands reach real people, fast.
           </p>
 
-          <div data-intro className="hero-cta flex flex-col gap-5">
+          <div className="intro-up [--d:0.6s] hero-cta flex flex-col gap-5">
             <StoreBadges variant="dark" />
             <Link
               href="/marketplace"
@@ -137,9 +150,18 @@ export default function Hero() {
         </div>
 
         {/* 3D stage */}
-        <div data-intro className="hero-stage relative h-[380px] sm:h-[460px] lg:h-[600px]">
-          <HeroScene state={scene} />
-          <div className="hero-chips pointer-events-none absolute inset-0 hidden sm:block">
+        <div className="intro-pop [--d:0.2s] hero-stage relative h-[380px] sm:h-[460px] lg:h-[600px]">
+          {/* Static icon: shows instantly, and stays as the hero art when the 3D scene is skipped */}
+          <Image
+            src="/logo-512.webp"
+            alt=""
+            width={512}
+            height={512}
+            priority
+            className={`absolute left-1/2 top-1/2 w-[42%] max-w-[230px] -translate-x-1/2 -translate-y-1/2 rounded-[22%] shadow-[0_30px_90px_-10px_rgba(224,64,154,0.45)] transition-opacity duration-700 ${sceneReady ? "opacity-0" : "opacity-100"}`}
+          />
+          {loadScene && <HeroScene state={scene} onReady={() => setSceneReady(true)} />}
+          <div className="intro-up [--d:0.9s] hero-chips pointer-events-none absolute inset-0 hidden sm:block">
             <div className="hero-chip absolute top-[12%] left-[2%] px-4 py-3 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-xl shadow-2xl">
               <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold">Per verified view</p>
               <p className="text-lg font-extrabold">You get paid</p>

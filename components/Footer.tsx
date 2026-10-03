@@ -43,7 +43,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="col-span-2 lg:col-span-1 max-w-sm">
             <Link href="/" className="inline-flex items-center gap-3 group">
-              <Image src="/logo.png" alt="RUS Logo" width={44} height={44} className="transition-transform group-hover:rotate-6" />
+              <Image src="/logo-192.webp" alt="RUS Logo" width={44} height={44} className="transition-transform group-hover:rotate-6" />
               <span className="text-2xl font-extrabold tracking-tight">RUS</span>
             </Link>
             <p className="mt-5 text-[15px] leading-relaxed text-white/60">

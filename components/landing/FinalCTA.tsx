@@ -53,7 +53,7 @@ export default function FinalCTA() {
             </defs>
             <circle cx="50" cy="50" r="46" fill="none" stroke="url(#cta-ring)" strokeWidth="3" strokeDasharray="40 8.2" strokeLinecap="round" />
           </svg>
-          <Image src="/logo.png" alt="" width={96} height={96} className="relative rounded-[22px]" />
+          <Image src="/logo-192.webp" alt="" width={96} height={96} className="relative rounded-[22px]" />
         </div>
 
         <h2 className="cta-reveal text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.05] max-w-3xl mx-auto">

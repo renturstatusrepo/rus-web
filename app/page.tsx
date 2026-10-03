@@ -23,9 +23,6 @@ export default async function Home() {
 
   return (
     <div className="landing-root relative flex min-h-screen w-full flex-col bg-rus-ink overflow-x-hidden">
-      <noscript>
-        <style>{"[data-intro]{visibility:visible}"}</style>
-      </noscript>
       <LandingNav />
       <main className="flex-1">
         <Hero />

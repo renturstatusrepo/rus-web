@@ -3,11 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import FontLoader from "@/components/FontLoader";
 
-// One variable font for the whole site: every weight is a real cut (no faux bold), and the optical-size
-// axis tightens letterforms automatically at headline sizes.
+// One variable font for the whole site: every weight is a real cut (no faux bold). latin-ext carries ₦,
+// and browsers only fetch it on pages that show a price.
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
-  axes: ["opsz"],
   variable: "--font-inter",
   display: "swap",
 });

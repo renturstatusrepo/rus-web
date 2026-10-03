@@ -19,8 +19,6 @@ export default function LandingNav() {
 
   const { contextSafe } = useGSAP(
     () => {
-      gsap.from(".nav-inner", { y: -30, autoAlpha: 0, duration: 0.9, ease: "power3.out", delay: 0.2 });
-
       // Glass background once the page has scrolled
       ScrollTrigger.create({
         start: 40,
@@ -46,9 +44,9 @@ export default function LandingNav() {
       ref={root}
       className="group/nav fixed inset-x-0 top-0 z-50 px-3 sm:px-6 pt-3 transition-[padding] duration-300 [&.nav-scrolled]:pt-2"
     >
-      <div className="nav-inner max-w-7xl mx-auto flex items-center justify-between rounded-2xl px-4 sm:px-5 py-3 border border-transparent transition-colors duration-300 group-[.nav-scrolled]/nav:bg-rus-ink/75 group-[.nav-scrolled]/nav:border-white/10 group-[.nav-scrolled]/nav:backdrop-blur-xl group-[.nav-scrolled]/nav:shadow-2xl">
+      <div className="nav-inner intro-up [--intro-y:-30px] [--d:0.1s] max-w-7xl mx-auto flex items-center justify-between rounded-2xl px-4 sm:px-5 py-3 border border-transparent transition-colors duration-300 group-[.nav-scrolled]/nav:bg-rus-ink/75 group-[.nav-scrolled]/nav:border-white/10 group-[.nav-scrolled]/nav:backdrop-blur-xl group-[.nav-scrolled]/nav:shadow-2xl">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <Image src="/logo.png" alt="RUS Logo" width={36} height={36} className="transition-transform group-hover:rotate-6" priority />
+          <Image src="/logo-192.webp" alt="RUS Logo" width={36} height={36} className="transition-transform group-hover:rotate-6" priority />
           <span className="text-xl font-extrabold tracking-tight text-white">RUS</span>
         </Link>
 

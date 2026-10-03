@@ -15,7 +15,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative size-10 flex items-center justify-center transition-transform group-hover:scale-105">
             <Image
-              src="/logo.png"
+              src="/logo-192.webp"
               alt="RUS Logo"
               width={40}
               height={40}

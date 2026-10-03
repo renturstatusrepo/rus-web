@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, RoundedBox, Sparkles, useTexture } from "@react-three/drei";
 import * as THREE from "three";
@@ -50,11 +50,16 @@ function StatusRing({
   );
 }
 
-function AppIcon() {
-  const logo = useTexture("/logo.png", (t) => {
+function AppIcon({ onReady }: { onReady?: () => void }) {
+  const logo = useTexture("/logo-512.webp", (t) => {
     t.colorSpace = THREE.SRGBColorSpace;
     t.anisotropy = 8;
   });
+
+  // Suspense only renders this once the texture has loaded, so the scene is ready to be seen
+  useEffect(() => {
+    onReady?.();
+  }, [onReady]);
 
   return (
     <group>
@@ -69,7 +74,17 @@ function AppIcon() {
   );
 }
 
-function Rig({ state, pointer }: { state: MutableRefObject<SceneState>; pointer: MutableRefObject<{ x: number; y: number }> }) {
+function Rig({
+  state,
+  pointer,
+  compact,
+  onReady,
+}: {
+  state: MutableRefObject<SceneState>;
+  pointer: MutableRefObject<{ x: number; y: number }>;
+  compact: boolean;
+  onReady?: () => void;
+}) {
   const root = useRef<THREE.Group>(null);
   const rings = useRef<THREE.Group>(null);
 
@@ -91,24 +106,31 @@ function Rig({ state, pointer }: { state: MutableRefObject<SceneState>; pointer:
   return (
     <group ref={root}>
       <Float speed={1.6} rotationIntensity={0.35} floatIntensity={0.6}>
-        <AppIcon />
+        <AppIcon onReady={onReady} />
       </Float>
       <group ref={rings}>
         <StatusRing radius={2.15} segments={6} color={PINK} speed={0.25} tilt={[1.15, 0.15, 0]} />
         <StatusRing radius={2.55} segments={9} color={INDIGO} speed={-0.18} tilt={[1.35, -0.45, 0.3]} tube={0.025} gap={0.12} />
         <StatusRing radius={2.95} segments={4} color={CYAN} speed={0.12} tilt={[1.6, 0.35, -0.2]} tube={0.03} gap={0.35} />
       </group>
-      <Sparkles count={70} scale={[8, 6, 4]} size={2.4} speed={0.35} color={CYAN} opacity={0.7} />
-      <Sparkles count={40} scale={[7, 5, 3]} size={3} speed={0.25} color={PINK} opacity={0.6} />
+      <Sparkles count={compact ? 30 : 70} scale={[8, 6, 4]} size={2.4} speed={0.35} color={CYAN} opacity={0.7} />
+      <Sparkles count={compact ? 18 : 40} scale={[7, 5, 3]} size={3} speed={0.25} color={PINK} opacity={0.6} />
     </group>
   );
 }
 
-export default function HeroScene({ state }: { state: MutableRefObject<SceneState> }) {
+export default function HeroScene({ state, onReady }: { state: MutableRefObject<SceneState>; onReady?: () => void }) {
   const wrap = useRef<HTMLDivElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
   const [visible, setVisible] = useState(true);
-  const dpr = useMemo<[number, number]>(() => [1, 1.75], []);
+  const [ready, setReady] = useState(false);
+  // Phones get fewer pixels and particles to push: the scene still looks sharp, and stays smooth
+  const compact = useMemo(() => window.matchMedia("(max-width: 767px), (pointer: coarse)").matches, []);
+  const dpr = useMemo<[number, number]>(() => (compact ? [1, 1.5] : [1, 1.75]), [compact]);
+  const handleReady = useCallback(() => {
+    setReady(true);
+    onReady?.();
+  }, [onReady]);
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
@@ -128,19 +150,19 @@ export default function HeroScene({ state }: { state: MutableRefObject<SceneStat
   }, []);
 
   return (
-    <div ref={wrap} className="absolute -inset-x-[18%] -inset-y-[12%]">
+    <div ref={wrap} className={`absolute -inset-x-[18%] -inset-y-[12%] transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}>
       <Canvas
         dpr={dpr}
         frameloop={visible ? "always" : "never"}
         camera={{ position: [0, 0, 8.6], fov: 42 }}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{ antialias: !compact, alpha: true, powerPreference: "high-performance" }}
       >
         <ambientLight intensity={0.5} />
         <directionalLight position={[3, 4, 5]} intensity={2.2} color="#ffffff" />
         <pointLight position={[-4, -2, 3]} intensity={30} color={PINK} />
         <pointLight position={[4, 3, 2]} intensity={30} color={CYAN} />
         <Suspense fallback={null}>
-          <Rig state={state} pointer={pointer} />
+          <Rig state={state} pointer={pointer} compact={compact} onReady={handleReady} />
         </Suspense>
       </Canvas>
     </div>
