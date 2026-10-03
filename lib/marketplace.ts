@@ -7,7 +7,6 @@ export { formatPrice } from "@/lib/format";
 
 const API_URL = process.env.API_URL || "https://api.renturstatus.com/api";
 const ASSET_URL = process.env.ASSET_URL || "https://rus-assets.fra1.cdn.digitaloceanspaces.com";
-const LINK_URL = process.env.LINK_URL || "https://link.renturstatus.com";
 
 export const PAGE_SIZE = 24;
 
@@ -188,7 +187,8 @@ export async function getProduct(id: string): Promise<Product | null> {
     sellerId: p.user_id,
     seller: toSeller(p.users),
     available: p.status === "available",
-    appLink: `${LINK_URL}/p/${encodeURIComponent(p.id)}`,
+    // Opens the product straight in the RUS app; no hop through the link service
+    appLink: `russm://p/${encodeURIComponent(p.id)}`,
   };
 }
 

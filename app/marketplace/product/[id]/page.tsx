@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import AddToCart from "@/components/marketplace/AddToCart";
 import CopyLink from "@/components/marketplace/CopyLink";
 import ProductGallery from "@/components/marketplace/ProductGallery";
 import ProductGrid from "@/components/marketplace/ProductGrid";
-import { getMyAffiliateCode } from "@/lib/affiliate";
+import { getMyAffiliateCode, getReferralCode } from "@/lib/affiliate";
 import { siteUrl } from "@/lib/checkout";
 import { formatPrice, getProduct, getRating, getSellerProducts, humanizeCategory } from "@/lib/marketplace";
 import { referralLink } from "@/lib/referral";
@@ -39,6 +40,11 @@ export default async function ProductPage({ params }: { params: Params }) {
   if (!product) notFound();
 
   const offersCommission = product.available && product.affiliateRate > 0;
+  // The app link only works on a phone with the app installed, so it's offered on phones only, and carries
+  // any affiliate code this visitor arrived with so the sale is still credited if they buy in the app
+  const [ua, referral] = await Promise.all([headers().then((h) => h.get("user-agent") ?? ""), getReferralCode()]);
+  const onPhone = /android|iphone|ipad|ipod/i.test(ua);
+  const appLink = referral ? `${product.appLink}?ref=${encodeURIComponent(referral)}` : product.appLink;
   const [rating, more, affiliateCode, site] = await Promise.all([
     getRating(product.id),
     getSellerProducts(product.sellerId, 1, 9),
@@ -122,9 +128,11 @@ export default async function ProductPage({ params }: { params: Params }) {
             {product.available ? (
               <div className="space-y-3">
                 <AddToCart productId={product.id} sizes={product.sizes} colors={product.colors} />
-                <a href={product.appLink} className="block text-center text-sm font-semibold text-purple-700 hover:underline">
-                  Prefer the app? Open this product in RUS
-                </a>
+                {onPhone && (
+                  <a href={appLink} className="block text-center text-sm font-semibold text-purple-700 hover:underline">
+                    Have the RUS app? Open this product there
+                  </a>
+                )}
               </div>
             ) : (
               <p className="rounded-2xl border border-slate-200 bg-slate-100 p-5 text-center font-bold text-slate-600">
