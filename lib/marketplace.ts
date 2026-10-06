@@ -153,6 +153,31 @@ export async function getCatalog({ q, category, min, max, page = 1 }: CatalogQue
   return toPage(await api<Raw[]>(`/products/filter?${params}`), page);
 }
 
+/** Everything a search engine should be able to find: one entry per listed product. */
+export type Listing = { id: string; updatedAt: string | null };
+
+/**
+ * Every listable product, for the sitemap. Paged through because the API caps a page at 100, and
+ * capped in turn so a catalogue that grows unexpectedly can't build a sitemap Google will reject
+ * (its limit is 50,000 URLs per file).
+ */
+export async function getAllListings(max = 10_000): Promise<Listing[]> {
+  const listings: Listing[] = [];
+  const perPage = 100;
+
+  for (let page = 1; listings.length < max; page++) {
+    const res = await api<Raw[]>(`/products/filter?status=available&limit=${perPage}&page=${page}&sort=newest`, 3600);
+    const rows = (res?.data ?? []).filter(isListable);
+    for (const row of rows) {
+      if (row?.id) listings.push({ id: String(row.id), updatedAt: row.updated_at ?? row.created_at ?? null });
+    }
+    // A short page is the last one
+    if ((res?.data?.length ?? 0) < perPage) break;
+  }
+
+  return listings.slice(0, max);
+}
+
 export async function getCategories(): Promise<Category[]> {
   const res = await api<Raw[]>("/categories?limit=100", 3600);
   if (res?.data?.length) {

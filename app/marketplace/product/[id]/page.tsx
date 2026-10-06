@@ -1,18 +1,33 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import AddToCart from "@/components/marketplace/AddToCart";
-import CopyLink from "@/components/marketplace/CopyLink";
 import ProductGallery from "@/components/marketplace/ProductGallery";
 import ProductGrid from "@/components/marketplace/ProductGrid";
-import { getMyAffiliateCode, getReferralCode } from "@/lib/affiliate";
-import { siteUrl } from "@/lib/checkout";
-import { formatPrice, getProduct, getRating, getSellerProducts, humanizeCategory } from "@/lib/marketplace";
-import { referralLink } from "@/lib/referral";
+import ProductPersonal from "@/components/marketplace/ProductPersonal";
+import { formatPrice, getAllListings, getProduct, getRating, getSellerProducts, humanizeCategory } from "@/lib/marketplace";
+import { absoluteUrl, categoryPath, priceValidUntil, productPath } from "@/lib/site";
 
 type Params = Promise<{ id: string }>;
+
+/**
+ * Re-rendered at most every five minutes, and shared by everyone who asks for it. Nothing on this
+ * page depends on who is asking: the app link and the affiliate share box fetch themselves after
+ * load, which is what lets a crawler — and every shopper — be served from cache.
+ */
+export const revalidate = 300;
+
+/**
+ * Prerenders a slice of the catalogue at build time so the most likely entry points are already
+ * sitting in the cache, and lets every other product render on first request and be cached from
+ * then on. Without any static params Next has nothing to prerender and treats each request as
+ * one-off work.
+ */
+export async function generateStaticParams() {
+  const listings = await getAllListings(200).catch(() => []);
+  return listings.map((listing) => ({ id: listing.id }));
+}
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = await params;
@@ -40,37 +55,54 @@ export default async function ProductPage({ params }: { params: Params }) {
   if (!product) notFound();
 
   const offersCommission = product.available && product.affiliateRate > 0;
-  // The app link only works on a phone with the app installed, so it's offered on phones only, and carries
-  // any affiliate code this visitor arrived with so the sale is still credited if they buy in the app
-  const [ua, referral] = await Promise.all([headers().then((h) => h.get("user-agent") ?? ""), getReferralCode()]);
-  const onPhone = /android|iphone|ipad|ipod/i.test(ua);
-  const appLink = referral ? `${product.appLink}?ref=${encodeURIComponent(referral)}` : product.appLink;
-  const [rating, more, affiliateCode, site] = await Promise.all([
-    getRating(product.id),
-    getSellerProducts(product.sellerId, 1, 9),
-    offersCommission ? getMyAffiliateCode() : null,
-    offersCommission ? siteUrl() : "",
-  ]);
+  const [rating, more] = await Promise.all([getRating(product.id), getSellerProducts(product.sellerId, 1, 9)]);
   const related = more.items.filter((p) => p.id !== product.id).slice(0, 8);
   const sellerName = product.businessName ?? product.seller?.name;
+
+  const url = absoluteUrl(productPath(product.id));
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.title,
-    description: product.description,
+    description: product.description || `${product.title} from ${sellerName ?? "a verified seller"} on the RUS marketplace.`,
     image: product.images,
+    url,
+    sku: product.id,
     category: humanizeCategory(product.category),
+    itemCondition: "https://schema.org/NewCondition",
+    ...(sellerName && { brand: { "@type": "Brand", name: sellerName } }),
     ...(rating && {
       aggregateRating: { "@type": "AggregateRating", ratingValue: rating.average, reviewCount: rating.count },
     }),
     offers: {
       "@type": "Offer",
+      url,
       price: product.price,
       priceCurrency: "NGN",
+      priceValidUntil: priceValidUntil(),
       availability: product.available ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
       ...(sellerName && { seller: { "@type": "Organization", name: sellerName } }),
+      // Merchant listings read richer when delivery is stated outright
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: { "@type": "MonetaryAmount", value: product.deliveryFee, currency: "NGN" },
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "NG" },
+      },
     },
+  };
+
+  // Where this page sits, which can earn a breadcrumb trail in the result itself
+  const breadcrumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Marketplace", item: absoluteUrl("/marketplace") },
+      ...(product.category
+        ? [{ "@type": "ListItem", position: 2, name: humanizeCategory(product.category), item: absoluteUrl(categoryPath(product.category)) }]
+        : []),
+      { "@type": "ListItem", position: product.category ? 3 : 2, name: product.title, item: url },
+    ],
   };
 
   return (
@@ -78,6 +110,10 @@ export default async function ProductPage({ params }: { params: Params }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs).replace(/</g, "\\u003c") }}
       />
 
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-8 sm:py-10">
@@ -128,38 +164,17 @@ export default async function ProductPage({ params }: { params: Params }) {
             {product.available ? (
               <div className="space-y-3">
                 <AddToCart productId={product.id} sizes={product.sizes} colors={product.colors} />
-                {onPhone && (
-                  <a href={appLink} className="block text-center text-sm font-semibold text-purple-700 hover:underline">
-                    Have the RUS app? Open this product there
-                  </a>
-                )}
+                <ProductPersonal
+                  productId={product.id}
+                  price={product.price}
+                  affiliateRate={product.affiliateRate}
+                  offersCommission={offersCommission}
+                />
               </div>
             ) : (
               <p className="rounded-2xl border border-slate-200 bg-slate-100 p-5 text-center font-bold text-slate-600">
                 This product is no longer available
               </p>
-            )}
-
-            {offersCommission && (
-              <div className="rounded-2xl border border-purple-200 bg-purple-50/70 p-4">
-                {affiliateCode ? (
-                  <>
-                    <p className="font-extrabold text-purple-900">
-                      Earn {formatPrice((product.price * product.affiliateRate) / 100)} per sale
-                      <span className="ml-1 text-sm font-semibold text-purple-700">({product.affiliateRate}%)</span>
-                    </p>
-                    <p className="mb-3 mt-0.5 text-sm text-purple-900/70">Share your link. You also earn on anything else they buy that offers commission.</p>
-                    <CopyLink value={referralLink(site, `/marketplace/product/${encodeURIComponent(product.id)}`, affiliateCode)} />
-                  </>
-                ) : (
-                  <p className="text-sm text-purple-900">
-                    <span className="font-bold">Affiliates earn {product.affiliateRate}%</span> sharing this product.{" "}
-                    <Link href="/marketplace/affiliate" className="font-bold text-purple-700 underline-offset-2 hover:underline">
-                      Become an affiliate →
-                    </Link>
-                  </p>
-                )}
-              </div>
             )}
 
             {product.seller && (

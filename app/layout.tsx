@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { SITE_ORIGIN } from "@/lib/site";
 import FontLoader from "@/components/FontLoader";
 
 // One variable font for the whole site: every weight is a real cut (no faux bold). latin-ext carries ₦,
@@ -12,6 +13,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  // Without a base, canonical and Open Graph URLs are emitted relative, which crawlers and social
+  // scrapers resolve inconsistently — or not at all
+  metadataBase: new URL(SITE_ORIGIN),
   title: "RUS: Speed Marketing Platform",
   description: "Monetize your status, shop verified merchant stores and run speed marketing campaigns with RUS.",
   keywords: ["RUS", "RentUrStatus", "Monetize WhatsApp Status", "Earn Money Online", "Status Advertising", "Mobile App"],
