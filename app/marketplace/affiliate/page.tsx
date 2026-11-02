@@ -134,6 +134,12 @@ export default async function AffiliatePage({ searchParams }: { searchParams: Se
         <div className="mb-8">
           <p className="text-xs font-extrabold uppercase tracking-widest text-purple-700">RUS Affiliates</p>
           <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">Your affiliate dashboard</h1>
+          <Link
+            href="/marketplace/affiliate/products"
+            className="mt-3 inline-flex items-center gap-2 rounded-xl bg-purple-700 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-purple-700/20 hover:bg-purple-800"
+          >
+            Find products to promote →
+          </Link>
         </div>
 
         <section className={`${card} space-y-5`}>

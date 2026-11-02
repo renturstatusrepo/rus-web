@@ -2,7 +2,7 @@
 // the referral cookie is read here so it never has to reach client code.
 import "server-only";
 import { cookies } from "next/headers";
-import { callApi, getToken } from "@/lib/account";
+import { callApi, errorMessage, getToken } from "@/lib/account";
 import { assetUrl } from "@/lib/marketplace";
 import { normalizeCode, REF_COOKIE } from "@/lib/referral";
 
@@ -123,4 +123,85 @@ export async function getMyCommissions(limit = 50): Promise<Commission[]> {
       createdAt: c.created_at,
     };
   });
+}
+
+export type PromotableProduct = {
+  id: string;
+  title: string;
+  price: number;
+  image: string | null;
+  category: string;
+  location: string | null;
+  /** Percentage of the item price this product pays an affiliate */
+  affiliateRate: number;
+  /** What one sale pays you */
+  earnPerSale: number;
+  /** Units bought by anyone, affiliate-referred or not: a demand signal */
+  unitsSold: number;
+  /** Commission this product has already produced for affiliates */
+  commissionEarned: number;
+  affiliateSales: number;
+  clicks: number;
+};
+
+export type PromotableSort = "earning" | "top_selling" | "top_yielding" | "rate" | "newest" | "price_low";
+
+export type PromotablePage =
+  | { ok: true; items: PromotableProduct[]; total: number; page: number; pageCount: number }
+  | { ok: false; error: string };
+
+/**
+ * What this affiliate can promote, ranked. The API refuses anyone who isn't approved — units sold is
+ * a seller's private business — and the reason comes back as the error so the page can say which it is.
+ */
+export async function getPromotableProducts({
+  sort = "earning",
+  q,
+  category,
+  page = 1,
+  limit = 24,
+}: { sort?: PromotableSort; q?: string; category?: string; page?: number; limit?: number } = {}): Promise<PromotablePage> {
+  const token = await getToken();
+  if (!token) return { ok: false, error: "Please log in to see products to promote." };
+
+  const params = new URLSearchParams({ sort, page: String(page), limit: String(limit) });
+  if (q?.trim()) params.set("q", q.trim());
+  if (category?.trim()) params.set("category", category.trim());
+
+  const res = await callApi(`/affiliate/products?${params}`, { token });
+  if (!res.ok) {
+    return { ok: false, error: errorMessage(res, "We couldn’t load products to promote just now.") };
+  }
+
+  const rows: Raw[] = Array.isArray(res.body?.data) ? res.body.data : [];
+  const total = Number(res.body?.total ?? rows.length);
+  return {
+    ok: true,
+    total,
+    page,
+    pageCount: Math.max(1, Math.ceil(total / limit)),
+    items: rows.map((p) => {
+      let image: string | null = null;
+      try {
+        const parsed = typeof p.images === "string" ? JSON.parse(p.images) : p.images;
+        image = assetUrl(Array.isArray(parsed) ? parsed[0] : parsed);
+      } catch {
+        image = assetUrl(p.images);
+      }
+      return {
+        id: String(p.id),
+        title: p.title ?? "Product",
+        price: Number(p.price || 0),
+        image,
+        category: p.category ?? "",
+        location: p.location || null,
+        affiliateRate: Number(p.affiliateRate || 0),
+        earnPerSale: Number(p.earnPerSale || 0),
+        unitsSold: Number(p.unitsSold || 0),
+        commissionEarned: Number(p.commissionEarned || 0),
+        affiliateSales: Number(p.affiliateSales || 0),
+        clicks: Number(p.clicks || 0),
+      };
+    }),
+  };
 }
