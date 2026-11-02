@@ -10,6 +10,7 @@ import {
   IMAGE_TYPES,
   MAX_IMAGE_BYTES,
   MAX_PRODUCT_IMAGES,
+  setAffiliateRateInBulk,
   uploadImage,
   type OrderStatus,
 } from "@/lib/seller";
@@ -204,4 +205,31 @@ export async function updateOrderStatus(_prev: OrderStatusState, formData: FormD
   if (!res.ok) return { error: errorMessage(res, "We couldn’t update this order. Please try again.") };
   revalidatePath("/marketplace/sell/orders");
   return null;
+}
+
+export type BulkAffiliateState = { error?: string; done?: string } | null;
+
+/**
+ * Sets the affiliate commission across the seller's catalogue. Shops with dozens of listings were
+ * otherwise opening one edit form per product to join the programme — or to leave it.
+ *
+ * Which products are covered comes from the submitted checkboxes, or from "apply to all", and the
+ * API scopes the change to this seller regardless, so a stale tab cannot reach anyone else's listing.
+ */
+export async function bulkAffiliate(_prev: BulkAffiliateState, formData: FormData): Promise<BulkAffiliateState> {
+  await requireSession();
+
+  const rate = amount(formData.get("rate"));
+  if (!Number.isFinite(rate)) return { error: "Enter the percentage affiliates should earn." };
+
+  const all = text(formData.get("scope")) === "all";
+  const ids = formData.getAll("productIds").filter((v): v is string => typeof v === "string" && v.length > 0);
+  if (!all && ids.length === 0) return { error: "Tick the products to change, or choose “all products”." };
+
+  const result = await setAffiliateRateInBulk(rate, all ? { all: true } : { ids });
+  if (!result.ok) return { error: result.error };
+
+  revalidatePath("/marketplace/sell");
+  const skipped = result.skipped.length ? ` ${result.skipped.length} could not be changed.` : "";
+  return { done: `${result.message}.${skipped}` };
 }

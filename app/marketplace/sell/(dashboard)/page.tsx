@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import BulkAffiliate from "@/components/marketplace/BulkAffiliate";
 import DeleteProductButton from "@/components/marketplace/DeleteProductButton";
 import { formatPrice } from "@/lib/format";
 import { humanizeCategory } from "@/lib/marketplace";
+import { getAffiliateSettings } from "@/lib/affiliate";
 import { getMyProducts, type ProductStatus } from "@/lib/seller";
 
 export const metadata: Metadata = { title: "Your products", robots: { index: false } };
@@ -17,7 +19,12 @@ const statusBadge: Record<ProductStatus, { label: string; className: string }> =
 };
 
 export default async function SellerProductsPage({ searchParams }: { searchParams: SearchParams }) {
-  const [products, { saved, welcome }] = await Promise.all([getMyProducts(), searchParams]);
+  const [products, affiliate, { saved, welcome }] = await Promise.all([
+    getMyProducts(),
+    getAffiliateSettings(),
+    searchParams,
+  ]);
+  const offeringCount = products.filter((p) => p.affiliateRate > 0).length;
 
   return (
     <>
@@ -45,6 +52,12 @@ export default async function SellerProductsPage({ searchParams }: { searchParam
         </Link>
       </div>
 
+      <BulkAffiliate
+        productCount={products.length}
+        offeringCount={offeringCount}
+        minRate={affiliate.minRate}
+        maxRate={affiliate.maxRate}
+      >
       {products.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
           <p className="text-lg font-bold text-slate-900">No products yet</p>
@@ -57,6 +70,13 @@ export default async function SellerProductsPage({ searchParams }: { searchParam
             return (
               <li key={p.id} className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 sm:flex-row sm:items-center">
                 <div className="flex min-w-0 flex-1 gap-4">
+                  <input
+                    type="checkbox"
+                    name="productIds"
+                    value={p.id}
+                    aria-label={`Select ${p.title}`}
+                    className="mt-1 size-4 shrink-0 accent-purple-700"
+                  />
                   <div className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:size-20">
                     {p.images[0] && <Image src={p.images[0]} alt="" fill sizes="80px" className="object-cover" />}
                   </div>
@@ -70,6 +90,11 @@ export default async function SellerProductsPage({ searchParams }: { searchParam
                     <div className="mt-1.5 flex items-center gap-2">
                       <span className="font-extrabold text-slate-900">{formatPrice(p.price)}</span>
                       <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${badge.className}`}>{badge.label}</span>
+                      {p.affiliateRate > 0 && (
+                        <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-bold text-purple-800">
+                          {p.affiliateRate}% to affiliates
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -95,6 +120,7 @@ export default async function SellerProductsPage({ searchParams }: { searchParam
           })}
         </ul>
       )}
+      </BulkAffiliate>
     </>
   );
 }

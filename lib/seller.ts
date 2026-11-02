@@ -1,7 +1,7 @@
 // Server-only reads for the seller dashboard. Every call runs with the signed-in seller's token,
 // and the API only returns their own business, products and orders.
 import "server-only";
-import { callApi, getToken, readCancellation, type Order } from "@/lib/account";
+import { callApi, errorMessage, getToken, readCancellation, type Order } from "@/lib/account";
 import { assetUrl, type Variant } from "@/lib/marketplace";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -176,4 +176,34 @@ export async function uploadImage(token: string, file: File): Promise<string | n
     console.error("Image upload failed", error);
     return null;
   }
+}
+
+/**
+ * Sets the affiliate commission on many products at once. `all` covers the seller's whole catalogue;
+ * otherwise only the ids given, and the API returns any it would not change as `skipped`.
+ */
+export async function setAffiliateRateInBulk(
+  rate: number,
+  { ids, all }: { ids?: string[]; all?: boolean },
+): Promise<{ ok: true; updated: number; skipped: string[]; message: string } | { ok: false; error: string }> {
+  const token = await getToken();
+  if (!token) return { ok: false, error: "Please log in again." };
+
+  const res = await callApi("/products/affiliate/bulk", {
+    method: "POST",
+    token,
+    body: all ? { allProducts: true, rate } : { productIds: ids ?? [], rate },
+  });
+
+  if (!res.ok) {
+    return { ok: false, error: errorMessage(res, "We couldn’t update your products. Please try again.") };
+  }
+
+  const data = res.body?.data ?? {};
+  return {
+    ok: true,
+    updated: Number(data.updated || 0),
+    skipped: Array.isArray(data.skipped) ? data.skipped : [],
+    message: res.body?.message || "Products updated",
+  };
 }
