@@ -53,7 +53,7 @@ export default function AccountDeletion() {
                                     <ol className="list-decimal list-inside space-y-2 ml-4">
                                         <li>Open the RUS app and log in to your account</li>
                                         <li>Navigate to <span className="font-semibold">Profile</span> → <span className="font-semibold">Settings</span></li>
-                                        <li>Scroll down and tap on <span className="font-semibold text-red-600">"Delete Account"</span></li>
+                                        <li>Scroll down and tap on <span className="font-semibold text-red-600">“Delete Account”</span></li>
                                         <li>Confirm your decision when prompted</li>
                                         <li>Your account and associated data will be permanently deleted</li>
                                     </ol>

@@ -31,7 +31,7 @@ export default function CookiePolicy() {
           {/* Introduction */}
           <div className="prose prose-slate max-w-none mb-12">
             <p className="text-base leading-relaxed text-slate-700">
-              This Cookie Policy explains how Rent Ur Status (RUS) Limited ("RUS", "we", "our", or "us") uses cookies and similar tracking technologies on our mobile application, website, and related services (collectively, the "Platform").
+              This Cookie Policy explains how Rent Ur Status (RUS) Limited (“RUS”, “we”, “our”, or “us”) uses cookies and similar tracking technologies on our mobile application, website, and related services (collectively, the “Platform”).
             </p>
             <p className="text-base leading-relaxed text-slate-700 mt-4">
               By using our Platform, you consent to the use of cookies in accordance with this Cookie Policy. If you do not agree to our use of cookies, you should disable cookies in your browser settings or refrain from using our Platform.
@@ -102,7 +102,7 @@ export default function CookiePolicy() {
                   <ul className="list-disc list-inside space-y-1 ml-4">
                     <li>Remember your language preferences</li>
                     <li>Store your account settings and preferences</li>
-                    <li>Remember information you've entered in forms</li>
+                    <li>Remember information you’ve entered in forms</li>
                     <li>Provide personalized content and recommendations</li>
                   </ul>
                 </div>
@@ -219,7 +219,7 @@ export default function CookiePolicy() {
                 7. Do Not Track Signals
               </h2>
               <p className="text-slate-700">
-                Some browsers include a "Do Not Track" (DNT) feature that signals to websites you visit that you do not want to have your online activity tracked. Currently, there is no standard for how DNT signals should be interpreted. As a result, our Platform does not currently respond to DNT browser signals or mechanisms.
+                Some browsers include a “Do Not Track” (DNT) feature that signals to websites you visit that you do not want to have your online activity tracked. Currently, there is no standard for how DNT signals should be interpreted. As a result, our Platform does not currently respond to DNT browser signals or mechanisms.
               </p>
             </section>
 
@@ -229,7 +229,7 @@ export default function CookiePolicy() {
                 8. Updates to This Cookie Policy
               </h2>
               <p className="text-slate-700">
-                We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any material changes by posting the updated Cookie Policy on this page and updating the "Last updated" date.
+                We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any material changes by posting the updated Cookie Policy on this page and updating the “Last updated” date.
               </p>
               <p className="text-slate-700 mt-3">
                 Your continued use of the Platform after such changes constitutes your acceptance of the updated Cookie Policy.

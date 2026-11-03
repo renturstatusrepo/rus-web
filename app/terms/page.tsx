@@ -31,7 +31,7 @@ export default function TermsOfService() {
           {/* Introduction */}
           <div className="prose prose-slate max-w-none mb-12">
             <p className="text-base leading-relaxed text-slate-700">
-              These Terms of Service ("Terms") govern your access to and use of Rent Ur Status (RUS) Limited's ("RUS", "we", "our", or "us") mobile application, website, and related services (collectively, the "Platform"). By accessing or using our Platform, you agree to be bound by these Terms.
+              These Terms of Service (“Terms”) govern your access to and use of Rent Ur Status (RUS) Limited’s (“RUS”, “we”, “our”, or “us”) mobile application, website, and related services (collectively, the “Platform”). By accessing or using our Platform, you agree to be bound by these Terms.
             </p>
             <p className="text-base leading-relaxed text-slate-700 mt-4">
               If you do not agree to these Terms, please do not use our Platform.
@@ -99,9 +99,9 @@ export default function TermsOfService() {
                   <li>Infringe upon the rights of others, including intellectual property rights</li>
                   <li>Post false, misleading, or fraudulent content</li>
                   <li>Engage in spam, harassment, or abusive behavior</li>
-                  <li>Attempt to gain unauthorized access to the Platform or other users' accounts</li>
+                  <li>Attempt to gain unauthorized access to the Platform or other users’ accounts</li>
                   <li>Use automated systems to manipulate the Platform or campaigns</li>
-                  <li>Interfere with or disrupt the Platform's operation</li>
+                  <li>Interfere with or disrupt the Platform’s operation</li>
                 </ul>
               </div>
             </section>
@@ -113,7 +113,7 @@ export default function TermsOfService() {
               </h2>
               <div className="space-y-3 text-slate-700">
                 <p>
-                  <span className="font-semibold">Your Content:</span> You retain ownership of content you post on the Platform. By posting content, you grant RUS a worldwide, non-exclusive, royalty-free license to use, display, and distribute your content in connection with the Platform's services.
+                  <span className="font-semibold">Your Content:</span> You retain ownership of content you post on the Platform. By posting content, you grant RUS a worldwide, non-exclusive, royalty-free license to use, display, and distribute your content in connection with the Platform’s services.
                 </p>
                 <p>
                   <span className="font-semibold">RUS Content:</span> All content, features, and functionality of the Platform, including but not limited to text, graphics, logos, and software, are owned by RUS or its licensors and are protected by copyright, trademark, and other intellectual property laws.
@@ -167,7 +167,7 @@ export default function TermsOfService() {
               </h2>
               <div className="space-y-3 text-slate-700">
                 <p>
-                  <span className="font-semibold">Platform Availability:</span> The Platform is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not guarantee that the Platform will be uninterrupted, error-free, or secure.
+                  <span className="font-semibold">Platform Availability:</span> The Platform is provided “as is” and “as available” without warranties of any kind, either express or implied. We do not guarantee that the Platform will be uninterrupted, error-free, or secure.
                 </p>
                 <p>
                   <span className="font-semibold">Limitation of Liability:</span> To the maximum extent permitted by law, RUS shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of the Platform.
@@ -227,7 +227,7 @@ export default function TermsOfService() {
                 12. Changes to Terms
               </h2>
               <p className="text-slate-700">
-                We reserve the right to modify these Terms at any time. We will notify users of material changes by posting the updated Terms on the Platform and updating the "Last updated" date. Your continued use of the Platform after such changes constitutes your acceptance of the modified Terms. If you do not agree to the modified Terms, you must stop using the Platform.
+                We reserve the right to modify these Terms at any time. We will notify users of material changes by posting the updated Terms on the Platform and updating the “Last updated” date. Your continued use of the Platform after such changes constitutes your acceptance of the modified Terms. If you do not agree to the modified Terms, you must stop using the Platform.
               </p>
             </section>
 

@@ -31,7 +31,7 @@ export default function PrivacyPolicy() {
           {/* Introduction */}
           <div className="prose prose-slate max-w-none mb-12">
             <p className="text-base leading-relaxed text-slate-700">
-              Rent Ur Status (RUS) Limited ("RUS", "we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application, website, and related services (collectively, the "Platform").
+              Rent Ur Status (RUS) Limited (“RUS”, “we”, “our”, or “us”) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application, website, and related services (collectively, the “Platform”).
             </p>
             <p className="text-base leading-relaxed text-slate-700 mt-4">
               By accessing or using RUS, you agree to the collection and use of information in accordance with this Privacy Policy.
@@ -225,7 +225,7 @@ export default function PrivacyPolicy() {
             {/* Section 9 */}
             <section>
               <h2 className="text-2xl font-bold text-neutral-dark mb-4">
-                9. Children's Privacy
+                9. Children’s Privacy
               </h2>
               <p className="text-slate-700">
                 RUS does not knowingly collect data from children under 13 (or under 16 where applicable by law).
@@ -275,7 +275,7 @@ export default function PrivacyPolicy() {
               </h2>
               <p className="text-slate-700">
                 We may update this Privacy Policy from time to time.
-                Any changes will be posted on this page with an updated "Last updated" date.
+                Any changes will be posted on this page with an updated “Last updated” date.
               </p>
             </section>
 
